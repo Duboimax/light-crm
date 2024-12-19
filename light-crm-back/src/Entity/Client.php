@@ -5,7 +5,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use User;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=App\Repository\ClientRepository::class)
@@ -56,7 +56,7 @@ class Client
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(User | null $user): self
     {
         $this->user = $user;
 
