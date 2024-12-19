@@ -3,9 +3,10 @@
 // src/Entity/EmailCampaign.php
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use User;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=App\Repository\EmailCampaignRepository::class)
@@ -56,7 +57,7 @@ class EmailCampaign
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(User | null $user): self
     {
         $this->user = $user;
 
@@ -114,5 +115,12 @@ class EmailCampaign
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

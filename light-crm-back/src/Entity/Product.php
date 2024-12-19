@@ -3,9 +3,10 @@
 // src/Entity/Product.php
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use User;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=App\Repository\ProductRepository::class)
@@ -53,7 +54,7 @@ class Product
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(User | null $user): self
     {
         $this->user = $user;
 
@@ -99,5 +100,12 @@ class Product
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

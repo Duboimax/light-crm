@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Ramsey\Uuid\Uuid;
@@ -218,7 +219,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|EmailCampaign[]
+     * @return Collection
      */
     public function getEmailCampaigns(): Collection
     {
@@ -255,5 +256,13 @@ class User implements UserInterface
     public function getUserIdentifier(): string
     {
         // TODO: Implement getUserIdentifier() method.
+        return $this->id;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }
