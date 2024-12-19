@@ -3,22 +3,20 @@
 // src/Entity/Product.php
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use App\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
-/**
- * @ORM\Entity(repositoryClass=App\Repository\ProductRepository::class)
- * @ORM\Table(name="products")
- */
 #[ORM\Entity(repositoryClass: \App\Repository\ProductRepository::class)]
 #[ORM\Table(name: 'products')]
 class Product
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private string $id;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -38,13 +36,13 @@ class Product
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::v7();
         $this->createdAt = new \DateTime();
     }
 
     // Getters et Setters
 
-    public function getId(): string
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

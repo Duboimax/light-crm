@@ -3,12 +3,12 @@ version: '3.8'
 services:
   db:
     image: postgres:14
-    container_name: crm_postgres
+    container_name: crm-postgres
     restart: always
     environment:
-      POSTGRES_USER: crm_user
-      POSTGRES_PASSWORD: crm_password
-      POSTGRES_DB: crm_db
+      POSTGRES_USER: crm-user
+      POSTGRES_PASSWORD: crm-password
+      POSTGRES_DB: light-crm
     ports:
       - "5432:5432"
     volumes:

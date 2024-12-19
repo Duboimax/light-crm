@@ -2,29 +2,27 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use App\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 
-/**
- * @ORM\Entity(repositoryClass=App\Repository\SaleRepository::class)
- * @ORM\Table(name="sales")
- */
 #[ORM\Entity(repositoryClass: \App\Repository\SaleRepository::class)]
 #[ORM\Table(name: 'sales')]
 class Sale
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private string $id;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Client::class)]
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?Client $client = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
@@ -38,13 +36,13 @@ class Sale
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::v7();
         $this->saleDate = new \DateTime();
     }
 
     // Getters et Setters
 
-    public function getId(): string
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -61,14 +59,14 @@ class Sale
         return $this;
     }
 
-    public function getClient(): ?Client
+    public function getCustomer(): ?Customer
     {
-        return $this->client;
+        return $this->customer;
     }
 
-    public function setClient(?Client $client): self
+    public function setCustomer(?Customer $customer): self
     {
-        $this->client = $client;
+        $this->customer = $customer;
 
         return $this;
     }

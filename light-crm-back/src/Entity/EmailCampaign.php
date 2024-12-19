@@ -3,22 +3,20 @@
 // src/Entity/EmailCampaign.php
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use App\Entity\User;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 
-/**
- * @ORM\Entity(repositoryClass=App\Repository\EmailCampaignRepository::class)
- * @ORM\Table(name="email_campaigns")
- */
 #[ORM\Entity(repositoryClass: \App\Repository\EmailCampaignRepository::class)]
 #[ORM\Table(name: 'email_campaigns')]
 class EmailCampaign
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private string $id;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailCampaigns')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -41,13 +39,13 @@ class EmailCampaign
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::v7();
         $this->createdAt = new \DateTime();
     }
 
     // Getters et Setters
 
-    public function getId(): string
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

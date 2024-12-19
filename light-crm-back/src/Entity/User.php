@@ -2,20 +2,22 @@
 // src/Entity/User.php
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
 #[ORM\Table(name: 'users')]
 class User implements UserInterface
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private string $id;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $email;
@@ -26,8 +28,8 @@ class User implements UserInterface
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Client::class, orphanRemoval: true)]
-    private Collection $clients;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class, orphanRemoval: true)]
+    private Collection $customers;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
@@ -43,9 +45,9 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::v7();
         $this->createdAt = new \DateTime();
-        $this->clients = new ArrayCollection();
+        $this->customers = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->sales = new ArrayCollection();
         $this->emailCampaigns = new ArrayCollection();
@@ -53,7 +55,7 @@ class User implements UserInterface
 
     // Getters et Setters
 
-    public function getId(): string
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -129,29 +131,29 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Client[]
+     * @return Collection|Customer[]
      */
-    public function getClients(): Collection
+    public function getCustomers(): Collection
     {
-        return $this->clients;
+        return $this->customers;
     }
 
-    public function addClient(Client $client): self
+    public function addCustomer(Customer $customer): self
     {
-        if (!$this->clients->contains($client)) {
-            $this->clients[] = $client;
-            $client->setUser($this);
+        if (!$this->customers->contains($customer)) {
+            $this->customers[] = $customer;
+            $customer->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeClient(Client $client): self
+    public function removeCustomer(Customer $customer): self
     {
-        if ($this->clients->removeElement($client)) {
+        if ($this->customers->removeElement($customer)) {
             // set the owning side to null (unless already changed)
-            if ($client->getUser() === $this) {
-                $client->setUser(null);
+            if ($customer->getUser() === $this) {
+                $customer->setUser(null);
             }
         }
 
