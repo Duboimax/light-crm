@@ -63,9 +63,6 @@
       <path value="$PROJECT_DIR$/light-crm-back/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/process" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/maker-bundle" />
-      <path value="$PROJECT_DIR$/light-crm-back/vendor/brick/math" />
-      <path value="$PROJECT_DIR$/light-crm-back/vendor/ramsey/collection" />
-      <path value="$PROJECT_DIR$/light-crm-back/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/psr/clock" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/type-info" />
@@ -76,6 +73,11 @@
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/security-csrf" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/security-core" />
       <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/security-http" />
+      <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/options-resolver" />
+      <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/form" />
+      <path value="$PROJECT_DIR$/light-crm-back/vendor/symfony/translation-contracts" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

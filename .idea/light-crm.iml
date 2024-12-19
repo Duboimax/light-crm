@@ -6,7 +6,6 @@
       <sourceFolder url="file://$MODULE_DIR$/light-crm-back/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/doctrine/collections" />
@@ -28,8 +27,6 @@
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/psr/container" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/psr/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/psr/log" />
-      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/ramsey/collection" />
-      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/ramsey/uuid" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/cache" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/cache-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/clock" />
@@ -45,12 +42,15 @@
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/filesystem" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/finder" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/flex" />
+      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/form" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/framework-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/http-kernel" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/maker-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/password-hasher" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/polyfill-intl-icu" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/polyfill-intl-normalizer" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/polyfill-php83" />
@@ -66,7 +66,9 @@
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/stopwatch" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/type-info" />
+      <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/validator" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/var-exporter" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/symfony/yaml" />
