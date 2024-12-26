@@ -4,17 +4,15 @@ namespace App\Entity;
 
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 
 #[ORM\Entity(repositoryClass: \App\Repository\SaleRepository::class)]
 #[ORM\Table(name: 'sales')]
 class Sale
 {
     #[ORM\Id]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id;
+    #[ORM\Column(type: 'string', length: 36, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -36,13 +34,13 @@ class Sale
 
     public function __construct()
     {
-        $this->id = Uuid::v7();
+        $this->id = Uuid::v7()->toRfc4122();
         $this->saleDate = new \DateTime();
     }
 
     // Getters et Setters
 
-    public function getId(): ?Uuid
+    public function getId(): string
     {
         return $this->id;
     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241219172716 extends AbstractMigration
+final class Version20241224191050 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,29 +20,18 @@ final class Version20241219172716 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE customers (id UUID NOT NULL, user_id UUID NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT NULL, phone VARCHAR(10) DEFAULT NULL, address VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE customers (id VARCHAR(36) NOT NULL, user_id VARCHAR(36) NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT NULL, phone VARCHAR(10) DEFAULT NULL, address VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_62534E21A76ED395 ON customers (user_id)');
-        $this->addSql('COMMENT ON COLUMN customers.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN customers.user_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE email_campaigns (id UUID NOT NULL, user_id UUID NOT NULL, name VARCHAR(255) NOT NULL, subject VARCHAR(255) DEFAULT NULL, body TEXT DEFAULT NULL, scheduled_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE email_campaigns (id VARCHAR(36) NOT NULL, user_id VARCHAR(36) NOT NULL, name VARCHAR(255) NOT NULL, subject VARCHAR(255) DEFAULT NULL, body TEXT DEFAULT NULL, scheduled_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_EC78EB5BA76ED395 ON email_campaigns (user_id)');
-        $this->addSql('COMMENT ON COLUMN email_campaigns.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN email_campaigns.user_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE products (id UUID NOT NULL, user_id UUID NOT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, price NUMERIC(10, 2) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE products (id VARCHAR(36) NOT NULL, user_id VARCHAR(36) NOT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, price NUMERIC(10, 2) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_B3BA5A5AA76ED395 ON products (user_id)');
-        $this->addSql('COMMENT ON COLUMN products.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN products.user_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE sales (id UUID NOT NULL, user_id UUID NOT NULL, customer_id UUID DEFAULT NULL, product_id UUID DEFAULT NULL, amount NUMERIC(10, 2) NOT NULL, sale_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE sales (id VARCHAR(36) NOT NULL, user_id VARCHAR(36) NOT NULL, customer_id VARCHAR(36) DEFAULT NULL, product_id VARCHAR(36) DEFAULT NULL, amount NUMERIC(10, 2) NOT NULL, sale_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_6B817044A76ED395 ON sales (user_id)');
         $this->addSql('CREATE INDEX IDX_6B8170449395C3F3 ON sales (customer_id)');
         $this->addSql('CREATE INDEX IDX_6B8170444584665A ON sales (product_id)');
-        $this->addSql('COMMENT ON COLUMN sales.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN sales.user_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN sales.customer_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN sales.product_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE users (id UUID NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE users (id VARCHAR(36) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_1483A5E9E7927C74 ON users (email)');
-        $this->addSql('COMMENT ON COLUMN users.id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE customers ADD CONSTRAINT FK_62534E21A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE email_campaigns ADD CONSTRAINT FK_EC78EB5BA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE products ADD CONSTRAINT FK_B3BA5A5AA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
