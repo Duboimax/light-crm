@@ -18,7 +18,7 @@ class UserController extends AbstractController
     ) {}
 
     #[Route('/users', name: 'user_get_all', methods: ["GET"])]
-    public function getAll(): JsonResponse
+    public function getAll(): JsonResponseregister
     {
         $users = $this->userService->getAll();
 
