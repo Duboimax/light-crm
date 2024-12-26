@@ -1,11 +1,9 @@
 <?php
 
-// src/Entity/Customer.php
 namespace App\Entity;
 
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: \App\Repository\CustomerRepository::class)]
@@ -13,10 +11,9 @@ use Symfony\Component\Uid\Uuid;
 class Customer
 {
     #[ORM\Id]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id;
+    #[ORM\Column(type: 'string', length: 36, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'customers')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -39,13 +36,13 @@ class Customer
 
     public function __construct()
     {
-        $this->id = Uuid::v7();
+        $this->id = Uuid::v7()->toRfc4122();
         $this->createdAt = new \DateTime();
     }
 
     // Getters et Setters
 
-    public function getId(): ?Uuid
+    public function getId(): string
     {
         return $this->id;
     }

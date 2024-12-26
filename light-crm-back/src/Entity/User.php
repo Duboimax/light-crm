@@ -1,23 +1,22 @@
 <?php
-// src/Entity/User.php
+
 namespace App\Entity;
 
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
 #[ORM\Table(name: 'users')]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id;
+    #[ORM\Column(type: 'string', length: 36, unique: true)]
+    private string $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $email;
@@ -26,6 +25,7 @@ class User implements UserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
+
     private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class, orphanRemoval: true)]
@@ -45,7 +45,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->id = Uuid::v7();
+        $this->id = Uuid::v7()->toRfc4122();
         $this->createdAt = new \DateTime();
         $this->customers = new ArrayCollection();
         $this->products = new ArrayCollection();
@@ -55,9 +55,16 @@ class User implements UserInterface
 
     // Getters et Setters
 
-    public function getId(): ?Uuid
+    public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getEmail(): string
@@ -65,6 +72,9 @@ class User implements UserInterface
         return $this->email;
     }
 
+    /**
+     * @return self
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -75,6 +85,7 @@ class User implements UserInterface
     /**
      * A visual identifier that represents this user.
      */
+    #[Ignore]
     public function getUsername(): string
     {
         return $this->email;
@@ -102,6 +113,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
+    #[Ignore]
     public function getPassword(): string
     {
         return $this->password;
@@ -255,16 +267,16 @@ class User implements UserInterface
         return $this->createdAt;
     }
 
-    public function getUserIdentifier(): string
-    {
-        // TODO: Implement getUserIdentifier() method.
-        return $this->id;
-    }
-
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    #[Ignore]
+    public function getUserIdentifier(): string
+    {
+        return $this->id;
     }
 }
