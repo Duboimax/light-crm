@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 use App\Services\UserService;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +16,7 @@ class UserController extends AbstractController
         private UserService $userService
     ) {}
 
-    #[Route('/users', name: 'user_get_all', methods: ["GET"])]
+    #[Route('users', name: 'user_get_all', methods: ["GET"])]
     public function getAll(): JsonResponse
     {
         $users = $this->userService->getAll();
@@ -25,7 +24,7 @@ class UserController extends AbstractController
         return $this->json($users, 200, ['groups' => ['user_read']]);
     }
 
-    #[Route('/users/{id}', name: 'user_get_by_id', methods: ["GET"])]
+    #[Route('users/{id}', name: 'user_get_by_id', methods: ["GET"])]
     public function getById(string $id): JsonResponse
     {
         $user = $this->userService->getById($id);
@@ -37,7 +36,7 @@ class UserController extends AbstractController
         return $this->json($user);
     }
 
-    #[Route('/users', name: 'user_create', methods: ['POST'])]
+    #[Route('users', name: 'user_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -51,7 +50,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/users/{id}', name: 'user_update', methods: ['PATCH'])]
+    #[Route('users/{id}', name: 'user_update', methods: ['PATCH'])]
     public function update(string $id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -65,7 +64,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/users/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('users/{id}', name: 'user_delete', methods: ['DELETE'])]
     public function delete(string $id): JsonResponse
     {
         $success = $this->userService->delete($id);
