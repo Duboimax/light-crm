@@ -9,4 +9,9 @@ export const AppMenu = [
     icon: 'heroicons:cog',
     path: '/settings',
   },
+  {
+    title: 'Setting',
+    icon: 'heroicons:cog',
+    path: '/test',
+  },
 ];

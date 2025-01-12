@@ -12,7 +12,7 @@ class UserFixture extends Fixture
     public const ADMIN_USER_REFERENCE = 'admin-user';
 
     public function __construct(
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {}
 
     public function load(ObjectManager $manager): void

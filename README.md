@@ -12,7 +12,7 @@
 8. Run ```php bin/console d:f:l``` for load fixtures
 9. In ```config``` folder create ```jwt``` folder
 10. Run ```php bin/console lexik:jwt:generate-keypair ```to generate key for jwt auth
-11. Run ```symfony:start``` to start server
+11. Run ```symfony server:start``` to start server
 
 Nice you have already install light-crm back and you are ready to code :)
 

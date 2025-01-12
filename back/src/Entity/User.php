@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,32 +22,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read','user:read', 'user:write'])]
     private string $email;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-
+    #[Groups(['user:write'])]
     private string $password;
 
     #[Ignore]
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Customer::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $customers;
 
     #[Ignore]
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Product::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $products;
 
     #[Ignore]
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sale::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Sale::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $sales;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: EmailCampaign::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: EmailCampaign::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $emailCampaigns;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
