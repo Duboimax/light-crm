@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use App\Entity\User;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: \App\Repository\CustomerRepository::class)]
 #[ORM\Table(name: 'customers')]
@@ -13,6 +14,7 @@ class Customer
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[Groups(['customer:read'])]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'customers')]
@@ -20,18 +22,25 @@ class Customer
     private User $user;
 
     #[ORM\Column(type: 'string', length: 255)]
+
+    #[Groups(['customer:read'])]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['customer:read'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    #[Groups(['customer:read'])]
     private ?string $phone = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['customer:read'])]
     private ?string $address = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['customer:read'])]
+
     private \DateTimeInterface $createdAt;
 
     public function __construct()

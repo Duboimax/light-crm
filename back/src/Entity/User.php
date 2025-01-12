@@ -6,6 +6,7 @@ use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -16,10 +17,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
+    #[Groups(['customer:read'])]
     private string $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['customer:read'])]
     private string $email;
+
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $username = null;
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
@@ -28,12 +34,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private string $password;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class, orphanRemoval: true)]
     private Collection $customers;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sale::class, orphanRemoval: true)]
     private Collection $sales;
 
@@ -82,14 +91,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
     /**
      * A visual identifier that represents this user.
      */
-    #[Ignore]
-    public function getUsername(): string
-    {
-        return $this->email;
-    }
 
     /**
      * @see UserInterface
@@ -97,7 +113,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // garantit que chaque utilisateur a au moins ROLE_USER
+        // Garantit que chaque utilisateur a au moins ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -274,9 +290,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    #[Ignore]
     public function getUserIdentifier(): string
     {
-        return $this->id;
+        return (string) $this->id;
     }
 }
