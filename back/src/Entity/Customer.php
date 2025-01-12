@@ -22,6 +22,7 @@ class Customer
     private User $user;
 
     #[ORM\Column(type: 'string', length: 255)]
+
     #[Groups(['customer:read'])]
     private string $name;
 
@@ -39,6 +40,7 @@ class Customer
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Groups(['customer:read'])]
+
     private \DateTimeInterface $createdAt;
 
     public function __construct()

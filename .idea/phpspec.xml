@@ -14,6 +14,9 @@
       <PhpSpecSuiteConfiguration>
         <option name="myPath" value="$PROJECT_DIR$/light-crm-back" />
       </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="myPath" value="$PROJECT_DIR$/light-crm-back" />
+      </PhpSpecSuiteConfiguration>
     </suites>
   </component>
 </project>
