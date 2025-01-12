@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Customer;
-use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,7 +26,7 @@ class CustomerType extends AbstractType
                 ]
             ])
             ->add('email', EmailType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('phone', TextType::class, [
                 'required' => false,

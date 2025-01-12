@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Form\CustomerType;
-use App\Services\CustomerService;
-use Doctrine\ORM\EntityManager;
+use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,33 +16,27 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CustomerController extends AbstractController
 {
-
-    public function __construct(
-        private CustomerService $customerService,
-        private FormFactoryInterface $formFactory
-    ) {}
-
     #[Route('customers', name: 'customers_get_all', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function list(): JsonResponse
+    public function list(CustomerRepository $customerRepository): JsonResponse
     {
         $userId = $this->getUser()->getUserIdentifier();
 
-        $customers = $this->customerService->list($userId);
+        $customers = $customerRepository->findByUserId($userId);
 
         return $this->json($customers, 200, [], ['groups' => 'customer:read']);
     }
 
     #[Route('customers/{id}', name: 'customers_get_by_id', methods: ['GET'])]
-    public function getById(string $id): JsonResponse
+    public function getById(string $id, CustomerRepository $customerRepository): JsonResponse
     {
-        $customer = $this->customerService->getById($id);
+        $customer = $customerRepository->find($id);
 
         return $this->json($customer, Response::HTTP_OK);
     }
 
     #[Route('customers', name: "customers_create", methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(CustomerType::class, new Customer());
         $form->submit(json_decode($request->getContent(), true));
@@ -56,17 +47,19 @@ class CustomerController extends AbstractController
 
         /** @var Customer $customer */
         $customer = $form->getData();
+        $customer->setUser($this->getUser());
 
-        $newCustomer = $this->customerService->create($customer, $this->getUser());
+        $em->persist($customer);
+        $em->flush();
 
-        return $this->json($newCustomer, Response::HTTP_CREATED);
+        return $this->json($customer, Response::HTTP_CREATED);
     }
 
     #[Route('customers/{id}', name: 'customers_update', methods: ['PATCH'])]
     public function update(Request $request, Customer $customer, EntityManagerInterface $em)
     {
         $form = $this->createForm(CustomerType::class, $customer);
-        $form->submit($request->request->all(), false);
+        $form->submit(json_decode($request->getContent(), true));
 
         if (!$form->isValid()) {
             return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
@@ -78,13 +71,14 @@ class CustomerController extends AbstractController
     }
 
     #[Route('customers/{id}', name: "customers_delete", methods: ['DELETE'])]
-    public function delete(Customer $customer): JsonResponse
+    public function delete(Customer $customer, EntityManagerInterface $em): JsonResponse
     {
         if ($customer->getUser() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
-        $this->customerService->delete($customer);
+        $em->remove($customer);
+        $em->flush();
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
