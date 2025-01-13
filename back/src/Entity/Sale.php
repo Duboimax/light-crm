@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: \App\Repository\SaleRepository::class)]
 #[ORM\Table(name: 'sales')]
@@ -12,6 +13,7 @@ class Sale
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[Groups('sales:read')]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sales')]
@@ -20,16 +22,20 @@ class Sale
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups('sales:read')]
     private ?Customer $customer = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups('sales:read')]
     private ?Product $product = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Groups('sales:read')]
     private string $amount;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups('sales:read')]
     private \DateTimeInterface $saleDate;
 
     public function __construct()
@@ -43,6 +49,13 @@ class Sale
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUser(): User

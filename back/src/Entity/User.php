@@ -18,15 +18,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
-    #[Groups(['customer:read'])]
+    #[Groups(['user:read', 'customer:read'])]
     private string $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['customer:read','user:read', 'user:write'])]
     private string $email;
 
+    #[Ignore]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
+    
+    #[ORM\Column(type: 'string', length: 100)]
+    #[Groups(['user:read'])]
+    private ?string $firstname;
+
+    #[ORM\Column(type: 'string', length: 100)]
+    #[Groups(['user:read'])]
+    private ?string $lastname;
 
     #[ORM\Column(type: 'json')]
     #[Groups(['user:read'])]
@@ -48,11 +57,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Sale::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $sales;
 
+    #[Ignore]
     #[ORM\OneToMany(targetEntity: EmailCampaign::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $emailCampaigns;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups('user:read')]
     private \DateTimeInterface $createdAt;
+
+    /**
+     * @var Collection<int, Service>
+     */
+    #[ORM\OneToMany(targetEntity: Service::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $services;
+
 
     public function __construct()
     {
@@ -62,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
         $this->sales = new ArrayCollection();
         $this->emailCampaigns = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     // Getters et Setters
@@ -295,5 +314,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->id;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): static
+    {
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getOwner() === $this) {
+                $service->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): static
+    {
+        $this->lastname = $lastname;
+
+        return $this;
     }
 }

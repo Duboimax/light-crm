@@ -20,6 +20,8 @@ class UserFixture extends Fixture
         $user = new User();
         $user->setEmail('user@example.com');
         $user->setUsername('user@example.com');
+        $user->setFirstname('User');
+        $user->setLastname('Example');
 
         $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
         $user->setRoles(['ROLE_USER']);
@@ -29,6 +31,8 @@ class UserFixture extends Fixture
         $admin->setEmail('racoon@admin.com');
 
         $admin->setUsername('racoon@admin.com');
+        $admin->setFirstname('Racoon');
+        $admin->setLastname('Admin');
 
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'password'));
         $admin->setRoles(['ROLE_ADMIN']);

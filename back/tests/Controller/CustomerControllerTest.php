@@ -73,7 +73,8 @@ class CustomerControllerTest extends KernelTestCase
     {
         $request = new Request(content: json_encode([
             'email' => 'new.customer@example.com',
-            'name' => 'New Customer',
+            'firstname' => 'Customer',
+            'lastname' => 'New',
         ]));
 
         $user = new User();
@@ -100,11 +101,13 @@ class CustomerControllerTest extends KernelTestCase
     public function test_update(): void
     {
         $customer = (new Customer())
-            ->setName('old Cutomer')
+            ->setFirstname('old Cutomer')
+            ->setLastname('old consumer')
             ->setEmail('old.customer@example.com');
 
         $request = new Request(content: json_encode([
-            'name' => 'old Customer',
+            'firstname' => 'old Customer',
+            'lastname' => 'old consumer',
             'email' => 'updated.customer@example.com',
         ]));
 

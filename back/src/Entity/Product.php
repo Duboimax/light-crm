@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: \App\Repository\ProductRepository::class)]
@@ -12,6 +13,7 @@ class Product
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[Groups('products_read')]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
@@ -19,16 +21,24 @@ class Product
     private User $user;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups('products_read')]
     private string $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups('products_read')]
     private ?string $description = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    #[Groups('products_read')]
     private ?string $price = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups('products_read')]
     private \DateTimeInterface $createdAt;
+
+    #[ORM\Column]
+    #[Groups('products_read')]
+    private ?int $stock_quantity = null;
 
     public function __construct()
     {
@@ -41,6 +51,13 @@ class Product
     public function getId(): string
     {
         return $this->id;
+    }
+    
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUser(): User
@@ -99,6 +116,18 @@ class Product
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getStockQuantity(): ?int
+    {
+        return $this->stock_quantity;
+    }
+
+    public function setStockQuantity(int $stock_quantity): static
+    {
+        $this->stock_quantity = $stock_quantity;
 
         return $this;
     }
