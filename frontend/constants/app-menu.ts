@@ -5,13 +5,24 @@ export const AppMenu = [
     path: '/',
   },
   {
+    title: 'Customers',
+    icon: 'heroicons:user-group',
+    path: '/customers',
+  },
+  {
+    title: 'Services',
+    icon: 'heroicons:building-storefront',
+    path: '/services',
+  },
+  {
+    title: 'Sales',
+    icon: 'heroicons:document-currency-euro',
+    path: '/sales',
+  },
+  {
     title: 'Setting',
     icon: 'heroicons:cog',
     path: '/settings',
   },
-  {
-    title: 'Customers',
-    icon: 'heroicons:cog',
-    path: '/customers',
-  },
+
 ];

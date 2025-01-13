@@ -23,7 +23,7 @@
             :size="64"
             circle
           ></n-avatar>
-          <h3 class="text-xl">{{ user?.displayName }}</h3>
+          <h3 class="text-xl">{{ user.firstname + ' ' + user.lastname }}</h3>
           </nav>
       </article>
       <ul class="flex flex-col divide-y divide-slate-100 bg-slate-50 rounded-xl mt-4">
@@ -122,6 +122,6 @@
 import {useAuthStore} from "~/stores/auth";
 
 const userStore = useAuthStore()
-const user = userStore.user
+const user: User = userStore.user
 
 </script>

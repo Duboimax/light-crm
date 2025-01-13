@@ -4,7 +4,7 @@
       <div class="flex flex-col items-center justify-center gap-4 text-center">
         <n-avatar circle :size="90" :src="user.image" />
         <article>
-          <h2 class="text-base">{{ user.displayName }} </h2>
+          <h2 class="text-base">{{ user.firstname + ' ' + user.lastname }} </h2>
           <p class="text-sm text-gray-500">
             <small>{{ user.email }}</small>
           </p>
@@ -34,11 +34,10 @@
 </template>
 
 <script setup lang="ts">
-const user = {
-  displayName: 'Mark AI',
-  email: 'mark-ai@email.com',
-  image: 'https://avatars.githubusercontent.com/u/18229355?v=4',
-};
+import {useAuthStore} from "~/stores/auth";
+
+const userStore = useAuthStore()
+const user: User = userStore.user
 
 const items = [
   {
