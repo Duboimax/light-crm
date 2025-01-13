@@ -129,12 +129,8 @@ class UserControllerTest extends KernelTestCase
         $response = json_decode($response->getContent(), true);
         $this->assertEquals([
             'id' => $user->getId(),
-            'username' => 'toto@gmail.com',
             'email' => 'toto@gmail.com',
-            'emailCampaigns' => [],
             'roles' => ['ROLE_USER'],
-            'userIdentifier' => $user->getId(),
-            'salt' => null,
             'createdAt' => $user->getCreatedAt()->format(\DateTime::ATOM)
         ], $response);
     }

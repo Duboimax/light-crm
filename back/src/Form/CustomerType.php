@@ -17,11 +17,19 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('firstname', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'The name cannot be blank'
+                        'message' => 'The firstname cannot be blank'
+                    ])
+                ]
+            ])
+            ->add('lastname', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'The lastname cannot be blank'
                     ])
                 ]
             ])
@@ -40,9 +48,6 @@ class CustomerType extends AbstractType
                         'message' => 'The phone ,umber must contain only digits'
                     ])
                 ]
-            ])
-            ->add('address', TextType::class, [
-                'required' => false
             ])
         ;
     }

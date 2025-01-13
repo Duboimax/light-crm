@@ -24,7 +24,7 @@ class UserController extends AbstractController
     {
         $users = $userRepository->findAll();
 
-        return $this->json($users, 200);
+        return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
 
     #[Route('users/{id}', name: 'user_get_by_id', methods: ["GET"])]
@@ -36,7 +36,7 @@ class UserController extends AbstractController
             return  $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($user);
+        return $this->json($user, 200, [], ['groups' => 'user:read']);
     }
 
     #[Route('/register', name: 'register', methods: ['POST'])]
@@ -60,7 +60,7 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return $this->json($user, Response::HTTP_CREATED);
+        return $this->json($user, Response::HTTP_CREATED, [], ['groups' => 'user:read']);
     }
 
     #[Route('users/{id}', name: 'user_update', methods: ['PATCH'])]
@@ -77,7 +77,7 @@ class UserController extends AbstractController
 
         $em->flush();
 
-        return $this->json($user);
+        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:read']);
     }
 
     #[Route('users/{id}', name: 'user_delete', methods: ['DELETE'])]
@@ -90,15 +90,15 @@ class UserController extends AbstractController
     }
 
     #[Route('/users', name: 'user_me', methods: ['GET'])]
-    public function me(UserRepository $userRepository): JsonResponse
+    public function current(UserRepository $userRepository): JsonResponse
     {
         $userId = $this->getUser()->getUserIdentifier();
         $user = $userRepository->find($userId);
+        
         if (!$user) {
             return $this->json(['message' => 'Non autorisé'], Response::HTTP_UNAUTHORIZED);
         }
 
-        // Assurez-vous que les groupes de sérialisation sont correctement définis
-        return $this->json($user, Response::HTTP_OK);
+        return $this->json($user, Response::HTTP_OK, [], ['user:read']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Customer;
+use App\Entity\Address;
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -21,10 +22,22 @@ class CustomerFixture extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 10; $i++) {
             $customer = new Customer();
             $customer->setUser($adminUser);
-            $customer->setName($faker->name());
+            $customer->setFirstname($faker->firstName());
+            $customer->setLastname($faker->lastName());
             $customer->setEmail($faker->unique()->email());
-            $customer->setPhone('0110101010');
-            $customer->setAddress($faker->address());
+            $customer->setPhone('0101010101');
+
+            // Ajout d'adresses pour chaque client
+            for ($j = 0; $j < 2; $j++) {
+                $address = new Address();
+                $address->setStreet($faker->streetAddress());
+                $address->setCity($faker->city());
+                $address->setPostalCode($faker->postcode());
+                $address->setCountry($faker->country());
+                $address->setCustomer($customer); // Relation avec le customer
+
+                $manager->persist($address);
+            }
 
             $manager->persist($customer);
         }
