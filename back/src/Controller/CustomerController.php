@@ -26,7 +26,7 @@ class CustomerController extends AbstractController
         return $this->json($customers,  context: ['groups' => ['customer:read']]);
     }
 
-    #[Route('customers/{id}', name: 'customers_get_by_id', methods: ['GET'])]
+    #[Route('/customers/{id}', name: 'customers_get_by_id', methods: ['GET'])]
     public function getById(string $id, CustomerRepository $customerRepository): JsonResponse
     {
         $customer = $customerRepository->find($id);
@@ -34,7 +34,7 @@ class CustomerController extends AbstractController
         return $this->json($customer, Response::HTTP_OK);
     }
 
-    #[Route('customers', name: "customers_create", methods: ['POST'])]
+    #[Route('/customers', name: "customers_create", methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(CustomerType::class, new Customer());
@@ -54,7 +54,7 @@ class CustomerController extends AbstractController
         return $this->json($customer, Response::HTTP_CREATED);
     }
 
-    #[Route('customers/{id}', name: 'customers_update', methods: ['PATCH'])]
+    #[Route('/customers/{id}', name: 'customers_update', methods: ['PATCH'])]
     public function update(Request $request, Customer $customer, EntityManagerInterface $em)
     {
         $form = $this->createForm(CustomerType::class, $customer);
@@ -70,7 +70,7 @@ class CustomerController extends AbstractController
         return $this->json($customer, context: ['groups' => 'customer:read']);
     }
 
-    #[Route('customers/{id}', name: "customers_delete", methods: ['DELETE'])]
+    #[Route('/customers/{id}', name: "customers_delete", methods: ['DELETE'])]
     public function delete(Customer $customer, EntityManagerInterface $em): JsonResponse
     {
         if ($customer->getUser() !== $this->getUser()) {

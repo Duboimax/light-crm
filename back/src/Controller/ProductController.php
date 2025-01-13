@@ -10,14 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProductController extends AbstractController
 {
-    #[Route('products', name: 'products_get_all', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/products', name: 'products_get_all', methods: ['GET'])]
     public function list(ProductRepository $productRepository): JsonResponse
     {
         $userId = $this->getUser()->getUserIdentifier();
@@ -27,7 +25,7 @@ class ProductController extends AbstractController
         return $this->json($products, 200, [], ['groups' => 'products:read']);
     }
 
-    #[Route('products/{id}', name: 'products_get_by_id', methods: ['GET'])]
+    #[Route('/products/{id}', name: 'products_get_by_id', methods: ['GET'])]
     public function getById(string $id, ProductRepository $productRepository): JsonResponse
     {
         $product = $productRepository->find($id);
@@ -39,7 +37,7 @@ class ProductController extends AbstractController
         return $this->json($product, Response::HTTP_OK, [], ['groups' => 'products:read']);
     }
 
-    #[Route('products', name: "products_create", methods: ['POST'])]
+    #[Route('/products', name: "products_create", methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(ProductType::class, new Product());
@@ -59,7 +57,7 @@ class ProductController extends AbstractController
         return $this->json($product, Response::HTTP_CREATED, [], ['groups' => 'products:read']);
     }
 
-    #[Route('products/{id}', name: 'products_update', methods: ['PATCH'])]
+    #[Route('/products/{id}', name: 'products_update', methods: ['PATCH'])]
     public function update(Request $request, Product $product, EntityManagerInterface $em): JsonResponse
     {
         if ($product->getUser() !== $this->getUser()) {
@@ -78,7 +76,7 @@ class ProductController extends AbstractController
         return $this->json($product, Response::HTTP_OK, [], ['groups' => 'products:read']);
     }
 
-    #[Route('products/{id}', name: "products_delete", methods: ['DELETE'])]
+    #[Route('/products/{id}', name: "products_delete", methods: ['DELETE'])]
     public function delete(Product $product, EntityManagerInterface $em): JsonResponse
     {
         if ($product->getUser() !== $this->getUser()) {

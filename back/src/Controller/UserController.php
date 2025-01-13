@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserController extends AbstractController
 {
 
-    #[Route('users/list', name: 'user_get_all', methods: ["GET"])]
+    #[Route('/users/list', name: 'user_get_all', methods: ["GET"])]
     public function getAll(UserRepository $userRepository): JsonResponse
     {
         $users = $userRepository->findAll();
@@ -27,7 +27,7 @@ class UserController extends AbstractController
         return $this->json($users, 200, [], ['groups' => 'user:read']);
     }
 
-    #[Route('users/{id}', name: 'user_get_by_id', methods: ["GET"])]
+    #[Route('/users/{id}', name: 'user_get_by_id', methods: ["GET"])]
     public function getById(string $id, UserRepository $userRepository): JsonResponse
     {
         $user = $userRepository->find($id);
@@ -63,7 +63,7 @@ class UserController extends AbstractController
         return $this->json($user, Response::HTTP_CREATED, [], ['groups' => 'user:read']);
     }
 
-    #[Route('users/{id}', name: 'user_update', methods: ['PATCH'])]
+    #[Route('/users/{id}', name: 'user_update', methods: ['PATCH'])]
     public function update(Request $request, User $user, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(UserUpdateType::class, $user);
@@ -80,7 +80,7 @@ class UserController extends AbstractController
         return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:read']);
     }
 
-    #[Route('users/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('/users/{id}', name: 'user_delete', methods: ['DELETE'])]
     public function delete(User $user, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($user);
