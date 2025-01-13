@@ -1,12 +1,12 @@
 <template>
   <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold">Services/Produits</h1>
+      <h1 class="text-3xl font-bold">Services</h1>
       <button
           @click="openAddModal"
           class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
       >
-        Ajouter un Service/Produit
+        Ajouter un Service
       </button>
     </div>
 
