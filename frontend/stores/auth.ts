@@ -2,13 +2,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-interface User {
-    id: string
-    email: string
-    roles: string[]
-    // Ajoutez d'autres propriétés si nécessaire
-}
-
 export const useAuthStore = defineStore('auth', () => {
     const nuxtApp = useNuxtApp()
 
@@ -20,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
     const login = async (email: string, password: string) => {
         try {
             const response = await nuxtApp.$axios.post('/login', { email, password })
+            console.log(response)
             token.value = response.data.token
             localStorage.setItem('token', <string>token.value)
             // Charger l'utilisateur après connexion
@@ -31,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const register = async (email: string, password: string) => {
         try {
-            await nuxtApp.$axios.post('/users', { email, password })
+            await nuxtApp.$axios.post('/register', { email, password })
             // Optionnel : Connectez l'utilisateur après l'inscription
             await login(email, password)
         } catch (error) {
@@ -42,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     const fetchUser = async () => {
         try {
             if (token.value) {
-                const response = await nuxtApp.$axios.get('/users/me')
+                const response = await nuxtApp.$axios.get('/users')
                 user.value = response.data
             }
         } catch (error) {

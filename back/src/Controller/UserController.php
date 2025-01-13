@@ -14,11 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends AbstractController
 {
 
-    #[Route('users', name: 'user_get_all', methods: ["GET"])]
+    #[Route('users/list', name: 'user_get_all', methods: ["GET"])]
     public function getAll(UserRepository $userRepository): JsonResponse
     {
         $users = $userRepository->findAll();
@@ -38,7 +39,7 @@ class UserController extends AbstractController
         return $this->json($user);
     }
 
-    #[Route('users', name: 'user_create', methods: ['POST'])]
+    #[Route('/register', name: 'register', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $form = $this->createForm(UserCreateType::class, new User());
@@ -88,14 +89,16 @@ class UserController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    #[Route('users/me', name: 'user_me', methods: ['GET'])]
-    public function me(): JsonResponse
+    #[Route('/users', name: 'user_me', methods: ['GET'])]
+    public function me(UserRepository $userRepository): JsonResponse
     {
-        $user = $this->getUser();
+        $userId = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->find($userId);
         if (!$user) {
             return $this->json(['message' => 'Non autorisé'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:read']);
+        // Assurez-vous que les groupes de sérialisation sont correctement définis
+        return $this->json($user, Response::HTTP_OK);
     }
 }

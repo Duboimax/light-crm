@@ -213,6 +213,7 @@
       <path value="$PROJECT_DIR$/back/vendor/symfony/var-exporter" />
       <path value="$PROJECT_DIR$/back/vendor/symfony/http-kernel" />
       <path value="$PROJECT_DIR$/back/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/back/vendor/nelmio/cors-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

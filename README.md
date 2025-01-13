@@ -8,7 +8,7 @@
 4. Go to ```back``` folder
 5. Run ```composer install``` to install dependancies
 6. Run ```php bin/console d:d:c``` if database isn't already created
-7. Run ```php bin/console d:m:m``` for load migraytions and create tables
+7. Run ```php bin/console d:m:m``` for load migrations and create tables
 8. Run ```php bin/console d:f:l``` for load fixtures
 9. In ```config``` folder create ```jwt``` folder
 10. Run ```php bin/console lexik:jwt:generate-keypair ```to generate key for jwt auth
