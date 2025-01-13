@@ -16,7 +16,10 @@
               :to="item.path"
               class="rounded-md p-2 px-3 text-primary-600 dark:hover:bg-slate-800"
             >
-              <Icon :name="`${item.icon}`" class="text-xl" />
+              <div class="flex space-x-2">
+                <Icon :name="`${item.icon}`" class="text-xl" />
+                <p>{{ item.title }}</p>
+              </div>
             </nuxt-link>
           </span>
         </div>
@@ -26,7 +29,10 @@
               :to="item.path"
               class="rounded-md p-2 px-3 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
-              <Icon :name="`${item.icon}`" class="text-xl" />
+              <div class="flex space-x-2">
+                <Icon :name="`${item.icon}`" class="text-xl" />
+                <p>{{ item.title }}</p>
+              </div>
             </nuxt-link>
           </span>
         </div>

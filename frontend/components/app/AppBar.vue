@@ -8,7 +8,7 @@
           <div
             class="flex h-full w-14 items-center justify-center bg-gray-100 transition-all hover:bg-primary-400 hover:text-white dark:bg-slate-700"
           >
-            <Icon name="iconamoon:apps" size="16" />test
+            <Icon name="iconamoon:apps" size="16" />
           </div>
         </li>
         <li

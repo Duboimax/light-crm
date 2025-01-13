@@ -10,8 +10,8 @@ export const AppMenu = [
     path: '/settings',
   },
   {
-    title: 'Setting',
+    title: 'Customers',
     icon: 'heroicons:cog',
-    path: '/test',
+    path: '/customers',
   },
 ];
