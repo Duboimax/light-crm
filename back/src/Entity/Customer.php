@@ -2,11 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: \App\Repository\CustomerRepository::class)]
 #[ORM\Table(name: 'customers')]
@@ -40,22 +38,18 @@ class Customer
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Groups(['customer:read'])]
-
     private \DateTimeInterface $createdAt;
 
-    /**
-     * @var Collection<int, Address>
-     */
-    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'customer', orphanRemoval: true)]
-    #[Groups('customer:read')]
-    private Collection $addresses;
+    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: "customers")]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['customer:read'])]
+    private ?Address $address = null;
 
 
     public function __construct()
     {
         $this->id = Uuid::v7()->toRfc4122();
         $this->createdAt = new \DateTime();
-        $this->addresses = new ArrayCollection();
     }
 
     // Getters et Setters
@@ -125,36 +119,18 @@ class Customer
         return $this->createdAt;
     }
 
-    /**
-     * @return Collection<int, Address>
-     */
-    public function getAddresses(): Collection
+    public function getAddress(): ?Address
     {
-        return $this->addresses;
+        return $this->address;
     }
 
-    public function addAddress(Address $address): static
+    public function setAddress(?Address $address): self
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses->add($address);
-            $address->setCustomer($this);
-        }
+        $this->address = $address;
 
         return $this;
     }
-
-    public function removeAddress(Address $address): static
-    {
-        if ($this->addresses->removeElement($address)) {
-            // set the owning side to null (unless already changed)
-            if ($address->getCustomer() === $this) {
-                $address->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
+ 
     public function getLastname(): ?string
     {
         return $this->lastname;

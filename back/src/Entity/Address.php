@@ -5,7 +5,9 @@ namespace App\Entity;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AddressRepository;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
@@ -16,9 +18,11 @@ class Address
     #[Groups('address:read')]
     private string $id;
 
-    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'addresses')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Customer $customer = null;
+    /**
+     * @var Collection<int, Customer>
+     */  
+    #[ORM\OneToMany(targetEntity: Customer::class, mappedBy: 'address', orphanRemoval: true)]
+    private Collection $customers;
 
     #[ORM\Column(length: 255)]
     #[Groups(['address:read', 'customer:read'])]
@@ -43,6 +47,7 @@ class Address
     public function __construct()
     {
         $this->id = Uuid::v7()->toRfc4122();
+        $this->customers = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -53,18 +58,6 @@ class Address
     public function setId(string $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getCustomer(): ?Customer
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(?Customer $customer): static
-    {
-        $this->customer = $customer;
 
         return $this;
     }
@@ -125,6 +118,34 @@ class Address
     public function setCountry(string $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers[] = $customer;
+            $customer->setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(Customer $customer): self
+    {
+        if ($this->customers->contains($customer)) {
+            $this->customers->removeElement($customer);
+            // si l'adresse est supprimée, réinitialiser la relation.
+            if ($customer->getAddress() === $this) {
+                $customer->setAddress(null);
+            }
+        }
 
         return $this;
     }

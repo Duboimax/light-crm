@@ -18,11 +18,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
-    #[Groups(['user:read', 'customer:read'])]
+    #[Groups(['user:read'])]
     private string $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['customer:read','user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write'])]
     private string $email;
 
     #[Ignore]
@@ -70,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Service::class, mappedBy: 'owner', orphanRemoval: true)]
     private Collection $services;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageUrl = null;
 
 
     public function __construct()
@@ -366,6 +369,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }
