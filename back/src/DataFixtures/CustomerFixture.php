@@ -26,18 +26,16 @@ class CustomerFixture extends Fixture implements DependentFixtureInterface
             $customer->setLastname($faker->lastName());
             $customer->setEmail($faker->unique()->email());
             $customer->setPhone('0101010101');
+           
+            $address = new Address();
+            $address->setStreet($faker->streetAddress());
+            $address->setCity($faker->city());
+            $address->setPostalCode($faker->postcode());
+            $address->setCountry($faker->country());
 
-            // Ajout d'adresses pour chaque client
-            for ($j = 0; $j < 2; $j++) {
-                $address = new Address();
-                $address->setStreet($faker->streetAddress());
-                $address->setCity($faker->city());
-                $address->setPostalCode($faker->postcode());
-                $address->setCountry($faker->country());
-                $address->setCustomer($customer); // Relation avec le customer
+            $customer->setAddress($address);
 
-                $manager->persist($address);
-            }
+            $manager->persist($address);
 
             $manager->persist($customer);
         }

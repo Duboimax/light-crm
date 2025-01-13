@@ -16,15 +16,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CustomerController extends AbstractController
 {
-    #[Route('customers', name: 'customers_get_all', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/customers', name: 'customers_get_all', methods: ['GET'])]
     public function list(CustomerRepository $customerRepository): JsonResponse
     {
         $userId = $this->getUser()->getUserIdentifier();
 
         $customers = $customerRepository->findByUserId($userId);
 
-        return $this->json($customers, 200, [], ['groups' => 'customer:read']);
+        return $this->json($customers,  context: ['groups' => ['customer:read']]);
     }
 
     #[Route('customers/{id}', name: 'customers_get_by_id', methods: ['GET'])]
@@ -59,15 +58,16 @@ class CustomerController extends AbstractController
     public function update(Request $request, Customer $customer, EntityManagerInterface $em)
     {
         $form = $this->createForm(CustomerType::class, $customer);
-        $form->submit(json_decode($request->getContent(), true));
+        $data = $request->toArray();
+        $form->submit($data);
 
-        if (!$form->isValid()) {
-            return $this->json($form->getErrors(true), Response::HTTP_BAD_REQUEST);
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->json('invalid', Response::HTTP_BAD_REQUEST);
         }
 
         $em->flush();
 
-        return $this->json($customer);
+        return $this->json($customer, context: ['groups' => 'customer:read']);
     }
 
     #[Route('customers/{id}', name: "customers_delete", methods: ['DELETE'])]
