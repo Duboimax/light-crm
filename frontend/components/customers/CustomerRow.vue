@@ -1,7 +1,7 @@
 <template>
   <tr class="bg-white dark:bg-slate-800">
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
-      {{ customer.name }}
+      {{ customer.firstname + ' ' + customer.lastname }}
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
       {{ customer.email }}
@@ -11,7 +11,7 @@
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
       <div class="whitespace-pre-wrap">
-        {{ customer.address }}
+        {{ customer.addresses[0].city }}
       </div>
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
@@ -92,7 +92,7 @@ const formatDate = (dateString: string): string => {
     hour: '2-digit',
     minute: '2-digit',
   }
-  return new Date(dateString).toLocaleDateString(undefined, options)
+  return new Date(dateString).toLocaleDateString('fr', options)
 }
 
 // Dropdown toggle

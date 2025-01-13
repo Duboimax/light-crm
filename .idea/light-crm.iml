@@ -9,7 +9,6 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/light-crm-back/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/back/src" isTestSource="false" packagePrefix="App\" />
-      <sourceFolder url="file://$MODULE_DIR$/back/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/back/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/light-crm-back/vendor/doctrine/cache" />
@@ -213,6 +212,10 @@
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/willdurand/jsonp-callback-validator" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/willdurand/negotiation" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/nelmio/cors-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/twig-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/twig-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/web-profiler-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/twig/twig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

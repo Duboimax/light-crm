@@ -1,8 +1,9 @@
 interface Customer {
     id: number
-    name: string
+    firstname: string
+    lastname: string
     email: string
-    "phone": string,
-    "address": string,
-    "createdAt": Date
+    phone: string,
+    addresses: Adress[],
+    createdAt: Date
 }

@@ -105,7 +105,7 @@ const setSelectedCustomer = (customer: Customer) => {
   isModalOpen.value = true
 }
 
-const handleAddCustomer = async (newCustomerData: Omit<Customer, 'id' | 'createdAt'>) => {
+const handleAddCustomer = async (newCustomerData: Customer) => {
   try {
     // Envoyer la requête pour ajouter un client
     const response = await useNuxtApp().$axios.post('/customers', newCustomerData)

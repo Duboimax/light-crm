@@ -2,18 +2,31 @@
 <template>
   <div v-if="isOpen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     <div class="bg-white dark:bg-slate-800 rounded-lg w-full max-w-lg p-6">
-      <h2 class="text-2xl font-bold mb-4">{{ props.isEditing ? 'Editer le client ' : 'Ajouter un Nouveau Client' }}</h2>
+      <h2 class="text-2xl font-bold mb-4">{{ isEditing ? 'Editer le client' : 'Ajouter un Nouveau Client' }}</h2>
       <form @submit.prevent="handleSubmit">
+        <!-- Prénom -->
         <div class="mb-4">
-          <label for="name" class="block text-gray-700 dark:text-gray-200">Nom</label>
+          <label for="firstname" class="block text-gray-700 dark:text-gray-200">Prénom</label>
           <input
               type="text"
-              id="name"
-              v-model="name"
+              id="firstname"
+              v-model="firstname"
               required
               class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
+        <!-- Nom -->
+        <div class="mb-4">
+          <label for="lastname" class="block text-gray-700 dark:text-gray-200">Nom</label>
+          <input
+              type="text"
+              id="lastname"
+              v-model="lastname"
+              required
+              class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <!-- Email -->
         <div class="mb-4">
           <label for="email" class="block text-gray-700 dark:text-gray-200">Email</label>
           <input
@@ -24,6 +37,7 @@
               class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
+        <!-- Téléphone -->
         <div class="mb-4">
           <label for="phone" class="block text-gray-700 dark:text-gray-200">Téléphone</label>
           <input
@@ -34,17 +48,62 @@
               class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
-        <div class="mb-4">
-          <label for="address" class="block text-gray-700 dark:text-gray-200">Adresse</label>
-          <textarea
-              id="address"
-              v-model="address"
-              required
-              rows="3"
-              class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          ></textarea>
+        <!-- Adresses -->
+        <div v-for="(address, index) in addresses" :key="index" class="mb-4 border-t pt-4">
+          <h3 class="font-semibold text-lg mb-2">Adresse {{ index + 1 }}</h3>
+          <div class="mb-2">
+            <label for="street" class="block text-gray-700 dark:text-gray-200">Rue</label>
+            <input
+                type="text"
+                v-model="address.street"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div class="mb-2">
+            <label for="postalCode" class="block text-gray-700 dark:text-gray-200">Code Postal</label>
+            <input
+                type="text"
+                v-model="address.postalCode"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div class="mb-2">
+            <label for="city" class="block text-gray-700 dark:text-gray-200">Ville</label>
+            <input
+                type="text"
+                v-model="address.city"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div class="mb-2">
+            <label for="country" class="block text-gray-700 dark:text-gray-200">Pays</label>
+            <input
+                type="text"
+                v-model="address.country"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <button
+              type="button"
+              @click="removeAddress(index)"
+              class="text-red-500 text-sm underline hover:text-red-700"
+          >
+            Supprimer cette adresse
+          </button>
         </div>
-        <div class="flex justify-end space-x-2">
+        <!-- Ajouter une nouvelle adresse -->
+        <button
+            type="button"
+            @click="addNewAddress"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
+        >
+          Ajouter une adresse
+        </button>
+        <div class="flex justify-end space-x-2 mt-6">
           <button
               type="button"
               @click="close"
@@ -65,21 +124,23 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps<{
   isOpen: boolean,
-  isEditing: boolean
-  customer?: Customer | null // Client à modifier, optionnel
+  isEditing: boolean,
+  customer?: Customer | null
 }>()
 
 const emit = defineEmits(['close', 'add', 'update'])
 
-const name = ref('')
+const firstname = ref('')
+const lastname = ref('')
 const email = ref('')
 const phone = ref('')
-const address = ref('')
+const addresses = ref<Adress[]>([{ street: '', postalCode: '', city: '', country: '' }])
 const isSubmitting = ref(false)
 
 // Pré-remplir les champs si un client est fourni
@@ -87,44 +148,52 @@ watch(
     () => props.customer,
     (newCustomer) => {
       if (newCustomer) {
-        name.value = newCustomer.name
+        firstname.value = newCustomer.firstname
+        lastname.value = newCustomer.lastname
         email.value = newCustomer.email
         phone.value = newCustomer.phone
-        address.value = newCustomer.address
+        addresses.value = newCustomer.addresses.length
+            ? newCustomer.addresses
+            : [{ street: '', postalCode: '', city: '', country: '' }]
       } else {
-        // Réinitialiser les champs pour l'ajout
-        name.value = ''
+        firstname.value = ''
+        lastname.value = ''
         email.value = ''
         phone.value = ''
-        address.value = ''
+        addresses.value = [{ street: '', postalCode: '', city: '', country: '' }]
       }
     },
     { immediate: true }
 )
 
+const addNewAddress = () => {
+  addresses.value.push({ street: '', postalCode: '', city: '', country: '' })
+}
+
+const removeAddress = (index: number) => {
+  addresses.value.splice(index, 1)
+}
+
 const handleSubmit = async () => {
   isSubmitting.value = true
   try {
-    const newCustomer = {
-      name: name.value,
+    const newCustomer: Customer = {
+      firstname: firstname.value,
+      lastname: lastname.value,
       email: email.value,
       phone: phone.value,
-      address: address.value,
+      addresses: addresses.value,
+      id: props.customer?.id || 0,
+      createdAt: props.customer?.createdAt || new Date(),
     }
 
     if (props.customer) {
-      // Émettre un événement de mise à jour
-      emit('update', { ...props.customer, ...newCustomer })
+      emit('update', newCustomer)
     } else {
-      // Émettre un événement d'ajout
       emit('add', newCustomer)
     }
 
-    // Réinitialiser les champs
-    name.value = ''
-    email.value = ''
-    phone.value = ''
-    address.value = ''
+    resetForm()
     emit('close')
   } catch (error) {
     alert('Erreur lors de la soumission.')
@@ -133,7 +202,16 @@ const handleSubmit = async () => {
   }
 }
 
+const resetForm = () => {
+  firstname.value = ''
+  lastname.value = ''
+  email.value = ''
+  phone.value = ''
+  addresses.value = [{ street: '', postalCode: '', city: '', country: '' }]
+}
+
 const close = () => {
   emit('close')
 }
+
 </script>
