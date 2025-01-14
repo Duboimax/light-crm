@@ -49,13 +49,13 @@
           />
         </div>
         <!-- Adresses -->
-        <div v-for="(address, index) in addresses" :key="index" class="mb-4 border-t pt-4">
-          <h3 class="font-semibold text-lg mb-2">Adresse {{ index + 1 }}</h3>
+        <div class="mb-4 border-t pt-4">
+          <h3 class="font-semibold text-lg mb-2">Adresse </h3>
           <div class="mb-2">
             <label for="street" class="block text-gray-700 dark:text-gray-200">Rue</label>
             <input
                 type="text"
-                v-model="address.street"
+                v-model="addresses.street"
                 required
                 class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -64,7 +64,7 @@
             <label for="postalCode" class="block text-gray-700 dark:text-gray-200">Code Postal</label>
             <input
                 type="text"
-                v-model="address.postalCode"
+                v-model="addresses.postalCode"
                 required
                 class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -73,7 +73,7 @@
             <label for="city" class="block text-gray-700 dark:text-gray-200">Ville</label>
             <input
                 type="text"
-                v-model="address.city"
+                v-model="addresses.city"
                 required
                 class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -82,27 +82,21 @@
             <label for="country" class="block text-gray-700 dark:text-gray-200">Pays</label>
             <input
                 type="text"
-                v-model="address.country"
+                v-model="addresses.country"
                 required
                 class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          <button
-              type="button"
-              @click="removeAddress(index)"
-              class="text-red-500 text-sm underline hover:text-red-700"
-          >
-            Supprimer cette adresse
-          </button>
+          <div class="mb-2">
+            <label for="country" class="block text-gray-700 dark:text-gray-200">Etat</label>
+            <input
+                type="text"
+                v-model="addresses.state"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
         </div>
-        <!-- Ajouter une nouvelle adresse -->
-        <button
-            type="button"
-            @click="addNewAddress"
-            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200"
-        >
-          Ajouter une adresse
-        </button>
         <div class="flex justify-end space-x-2 mt-6">
           <button
               type="button"
@@ -140,7 +134,7 @@ const firstname = ref('')
 const lastname = ref('')
 const email = ref('')
 const phone = ref('')
-const addresses = ref<Adress[]>([{ street: '', postalCode: '', city: '', country: '' }])
+const addresses = ref<Address>({ street: '', postalCode: '', city: '', country: '', state: '' })
 const isSubmitting = ref(false)
 
 // Pré-remplir les champs si un client est fourni
@@ -152,27 +146,20 @@ watch(
         lastname.value = newCustomer.lastname
         email.value = newCustomer.email
         phone.value = newCustomer.phone
-        addresses.value = newCustomer.addresses.length
-            ? newCustomer.addresses
-            : [{ street: '', postalCode: '', city: '', country: '' }]
+        addresses.value = newCustomer.address
+            ? newCustomer.address
+            : { street: '', postalCode: '', city: '', country: '', state: '' }
       } else {
         firstname.value = ''
         lastname.value = ''
         email.value = ''
         phone.value = ''
-        addresses.value = [{ street: '', postalCode: '', city: '', country: '' }]
+        addresses.value = { street: '', postalCode: '', city: '', country: '', state: '' }
       }
     },
     { immediate: true }
 )
 
-const addNewAddress = () => {
-  addresses.value.push({ street: '', postalCode: '', city: '', country: '' })
-}
-
-const removeAddress = (index: number) => {
-  addresses.value.splice(index, 1)
-}
 
 const handleSubmit = async () => {
   isSubmitting.value = true
@@ -182,9 +169,8 @@ const handleSubmit = async () => {
       lastname: lastname.value,
       email: email.value,
       phone: phone.value,
-      addresses: addresses.value,
-      id: props.customer?.id || 0,
-      createdAt: props.customer?.createdAt || new Date(),
+      address: addresses.value,
+      id: props.customer?.id || '',
     }
 
     if (props.customer) {
@@ -207,7 +193,7 @@ const resetForm = () => {
   lastname.value = ''
   email.value = ''
   phone.value = ''
-  addresses.value = [{ street: '', postalCode: '', city: '', country: '' }]
+  addresses.value = { street: '', postalCode: '', city: '', country: '', state: '' }
 }
 
 const close = () => {

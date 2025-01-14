@@ -107,6 +107,7 @@ const setSelectedCustomer = (customer: Customer) => {
 
 const handleAddCustomer = async (newCustomerData: Customer) => {
   try {
+    delete newCustomerData.id
     // Envoyer la requête pour ajouter un client
     const response = await useNuxtApp().$axios.post('/customers', newCustomerData)
 
@@ -122,8 +123,10 @@ const handleAddCustomer = async (newCustomerData: Customer) => {
 
 const handleUpdateCustomer = async (updatedCustomer: Customer) => {
   try {
+    const id = updatedCustomer.id
+    delete updatedCustomer.id
     // Appel API pour mettre à jour le client
-    const response = await useNuxtApp().$axios.patch(`/customers/${updatedCustomer.id}`, updatedCustomer)
+    const response = await useNuxtApp().$axios.patch(`/customers/${id}`, updatedCustomer)
 
     // Mettre à jour le client dans le store
     const updatedData = response.data

@@ -11,11 +11,11 @@
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
       <div class="whitespace-pre-wrap">
-        {{ customer.addresses[0].city }}
+        {{ customer.address.city }}
       </div>
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700">
-      {{ formatDate(customer.createdAt) }}
+      {{ formatDate(customer.createdAt.toString()) }}
     </td>
     <td class="py-2 px-4 border-b border-gray-200 dark:border-slate-700 text-right relative">
       <!-- Bouton pour afficher le menu -->
@@ -117,7 +117,7 @@ const sendEmail = () => {
 }
 
 const confirmDelete = () => {
-  if (confirm(`Êtes-vous sûr de vouloir supprimer le client "${props.customer.name}" ?`)) {
+  if (confirm(`Êtes-vous sûr de vouloir supprimer le client "${ props.customer.firstname }" ?`)) {
     emit('delete', props.customer.id)
     isDropdownOpen.value = false
   }
