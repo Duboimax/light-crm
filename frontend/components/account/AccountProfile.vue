@@ -1,11 +1,10 @@
 <template>
-  <NuxtLink to="/settings/accounts">
+  <NuxtLink to="/settings">
     <div class="flex gap-4">
-<!--      <n-avatar circle :size="60" :src="user.image" />-->
       <article>
-        <h2 class="text-base">{{ user.username }} </h2>
+        <!-- <h2 class="text-base">{{ user }} </h2> -->
         <p class="text-sm text-gray-500">
-          <small>{{ user.email }}</small>
+          <small>{{ user.firstname }} {{ user.lastname }}</small>
         </p>
       </article>
     </div>
@@ -14,6 +13,7 @@
 
 <script setup lang="ts">
 import {useAuthStore} from "~/stores/auth";
+
 
 const authStore = useAuthStore()
 

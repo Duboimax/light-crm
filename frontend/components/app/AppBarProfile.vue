@@ -28,19 +28,19 @@
       </article>
       <ul class="flex flex-col divide-y divide-slate-100 bg-slate-50 rounded-xl mt-4">
         <li class="px-4 py-2">
-          <NuxtLink to="/settings/accounts" class="flex items-center gap-2"> 
+          <NuxtLink to="/settings" class="flex items-center gap-2"> 
              <Icon name="solar:user-id-line-duotone" class="text-lg" />
              Profile  
           </NuxtLink>
         </li>
         <li class="px-4 py-2">
-          <NuxtLink to="/settings/accounts" class="flex items-center gap-2"> 
+          <NuxtLink to="/settings" class="flex items-center gap-2"> 
              <Icon name="solar:shield-keyhole-line-duotone" class="text-lg" />
              Security  
           </NuxtLink>
         </li>
         <li class="px-4 py-2">
-          <NuxtLink to="/settings/accounts" class="flex items-center gap-2"> 
+          <NuxtLink to="/settings" class="flex items-center gap-2"> 
              <Icon name="heroicons:cog" class="text-lg" />
              Setting  
           </NuxtLink>
