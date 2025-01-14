@@ -4,17 +4,18 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Service;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class ServiceFixture extends Fixture
+class ServiceFixture extends Fixture implements DependentFixtureInterface
 {
+    public const SERVICE_REFERENCE = 'service_';
     public function load(ObjectManager $manager): void
     {
-
         $adminUser = $this->getReference(UserFixture::ADMIN_USER_REFERENCE, User::class);
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
             $service = new Service();
             $service->setName("Service $i");
             $service->setDescription("Description for Service $i");
@@ -23,6 +24,8 @@ class ServiceFixture extends Fixture
             $service->setOwner($adminUser);
 
             $manager->persist($service);
+
+            $this->addReference(self::SERVICE_REFERENCE . $i, $service);
         }
 
         $manager->flush();

@@ -12,6 +12,7 @@ use Faker\Factory;
 
 class CustomerFixture extends Fixture implements DependentFixtureInterface
 {
+    public const CUSTOMER_REFERENCE = 'customer_';
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
@@ -36,8 +37,9 @@ class CustomerFixture extends Fixture implements DependentFixtureInterface
             $customer->setAddress($address);
 
             $manager->persist($address);
-
             $manager->persist($customer);
+
+            $this->addReference(self::CUSTOMER_REFERENCE . $i, $customer);
         }
 
         $manager->flush();
