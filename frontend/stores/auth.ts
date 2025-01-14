@@ -6,7 +6,7 @@ export const useAuthStore = defineStore('auth', () => {
     const nuxtApp = useNuxtApp()
 
     const user = ref<User | null>(null)
-    const token = ref<string | null>(null)
+    const token = ref<string | null>(localStorage.getItem('token'))
 
     const isAuthenticated = computed(() => !!token.value)
 
