@@ -7,7 +7,7 @@
           v-if="isAuthenticated"
           class="group relative flex h-full flex-col items-center bg-gray-100 dark:bg-slate-700"
       >
-        <div class="flex w-14 items-center pt-4">
+        <div class="flex w-40 items-center pt-4">
           <AppSideBar />
         </div>
       </aside>

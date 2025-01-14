@@ -23,7 +23,7 @@
             :size="64"
             circle
           ></n-avatar>
-          <h3 class="text-xl">{{ user?.displayName }}</h3>
+          <h3 class="text-xl">{{ user.firstname + ' ' + user.lastname }}</h3>
           </nav>
       </article>
       <ul class="flex flex-col divide-y divide-slate-100 bg-slate-50 rounded-xl mt-4">
@@ -91,7 +91,7 @@
             class="my-4 w-full divide-y divide-slate-100 rounded-xl bg-slate-50"
           >
             <li>
-              <button class="flex w-full gap-4 px-4 py-2">
+              <button class="flex w-full gap-4 px-4 py-2" @click="userStore.logout()">
                 <Icon name="ph:sign-out" size="20" />
                 Sign Out
               </button>
@@ -119,11 +119,9 @@
 </template>
 
 <script setup lang="ts">
+import {useAuthStore} from "~/stores/auth";
 
-const user = {
-  displayName: 'Mark AI',
-  email: 'mark-ai@email.com',
-  avatarUrl: 'https://avatars.githubusercontent.com/u/18229355?v=4',
-}
+const userStore = useAuthStore()
+const user: User = userStore.user
 
 </script>

@@ -212,6 +212,10 @@
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/willdurand/jsonp-callback-validator" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/willdurand/negotiation" />
       <excludeFolder url="file://$MODULE_DIR$/back/vendor/nelmio/cors-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/twig-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/twig-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/symfony/web-profiler-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/back/vendor/twig/twig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

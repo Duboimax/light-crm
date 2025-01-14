@@ -18,7 +18,7 @@ class ServiceFixture extends Fixture
             $service = new Service();
             $service->setName("Service $i");
             $service->setDescription("Description for Service $i");
-            $service->setHourlyRate(mt_rand(50, 150) / 10); 
+            $service->setHourlyRate(mt_rand(50, 150) / 10);
             $service->setDuration(mt_rand(30, 120));
             $service->setOwner($adminUser);
 

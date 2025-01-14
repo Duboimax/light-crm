@@ -20,7 +20,7 @@ class Address
 
     /**
      * @var Collection<int, Customer>
-     */  
+     */
     #[ORM\OneToMany(targetEntity: Customer::class, mappedBy: 'address', orphanRemoval: true)]
     private Collection $customers;
 
