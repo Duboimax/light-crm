@@ -45,6 +45,10 @@
                     </li>
                   </ul>
                 </n-card>
+                <main class="flex-grow p-4">
+          <!-- Le composant NuxtChild affiche la « sous-page » -->
+          <NuxtChild />
+        </main>
               </article>
             </div>
           </main>
