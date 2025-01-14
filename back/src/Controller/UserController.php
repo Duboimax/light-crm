@@ -99,6 +99,6 @@ class UserController extends AbstractController
             return $this->json(['message' => 'Non autorisé'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json($user, Response::HTTP_OK, [], ['user:read']);
+        return $this->json($user, Response::HTTP_OK, context: ['groups' => 'user:read']);
     }
 }
