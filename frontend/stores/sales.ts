@@ -17,6 +17,7 @@ export const useSaleStore = defineStore('sales', () => {
         try {
             const response = await nuxtApp.$axios.get('/sales');
             sales.value = response.data;
+            console.log(sales.value)
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Erreur lors de la récupération des ventes.';
         } finally {
