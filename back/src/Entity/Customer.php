@@ -13,7 +13,7 @@ class Customer
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'customers')]
@@ -21,30 +21,29 @@ class Customer
     private User $user;
 
     #[ORM\Column(type: 'string', length: 100)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(type: 'string', length: 100)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private ?string $phone = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private \DateTimeInterface $createdAt;
 
     #[ORM\ManyToOne(targetEntity: Address::class, cascade: ["persist"], inversedBy: "customers")]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['customer:read'])]
+    #[Groups(['customer:read', 'sale:read'])]
     private ?Address $address = null;
-
 
     public function __construct()
     {
