@@ -6,6 +6,9 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\EmailTemplateSenderService;
+use App\Service\MailerBuilder;
+use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -87,5 +90,15 @@ class ProductController extends AbstractController
         $em->flush();
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/otp_email', name: 'otp_email')]
+    public function sendOTPMail(MailerService $emailService, MailerBuilder $mailerBuilder)
+    {
+        $emailConfig = $mailerBuilder->createWelcomeEmailConfig('maxencedubois22@gmail.com', 'Maxence');
+
+        $emailService->sendEmail($emailConfig);
+
+        return $this->json('Mail Send');
     }
 }
