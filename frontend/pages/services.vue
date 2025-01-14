@@ -70,19 +70,39 @@ const closeModal = () => {
   selectedService.value = null;
 };
 
-const handleAddService = (newService: Service) => {
-  serviceStore.addService(newService);
-  closeModal();
+const handleAddService = async (newService: Service) => {
+  try {
+    delete newService.id
+    const response = await useNuxtApp().$axios.post('/services', newService)
+    serviceStore.addService(response.data);
+    closeModal();
+  } catch (err: any) {
+    alert(err.response?.data?.message || 'Erreur lors de l\'ajout du service.')
+  }
 };
 
-const handleUpdateService = (updatedService: Service) => {
-  serviceStore.updateService(updatedService);
+const handleUpdateService = async (updatedService: Service) => {
   closeModal();
+  try {
+    const id = updatedService.id
+    delete updatedService.id
+    const response = await useNuxtApp().$axios.patch(`/services/${id}`, updatedService)
+    serviceStore.updateService(response.data);
+    alert('Service mis à jour avec succès.')
+  } catch (err: any) {
+    alert(err.response?.data?.message || 'Erreur lors de la mise à jour du service.')
+  }
 };
 
-const handleDelete = (id: string) => {
+const handleDelete = async (id: string) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
-    serviceStore.removeService(id);
+    try {
+      await useNuxtApp().$axios.delete(`/services/${id}`)
+      serviceStore.removeService(id);
+      alert('Client service avec succès.')
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erreur lors de la suppression du service.')
+    }
   }
 };
 
