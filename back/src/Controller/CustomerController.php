@@ -51,7 +51,7 @@ class CustomerController extends AbstractController
         $em->persist($customer);
         $em->flush();
 
-        return $this->json($customer, Response::HTTP_CREATED);
+        return $this->json($customer, Response::HTTP_CREATED, context: ['groups' => ['customer:read']]);
     }
 
     #[Route('/customers/{id}', name: 'customers_update', methods: ['PATCH'])]

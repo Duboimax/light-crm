@@ -40,7 +40,7 @@ class Customer
     #[Groups(['customer:read'])]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: "customers")]
+    #[ORM\ManyToOne(targetEntity: Address::class, cascade: ["persist"], inversedBy: "customers")]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['customer:read'])]
     private ?Address $address = null;
