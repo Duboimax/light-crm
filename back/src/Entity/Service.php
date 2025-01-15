@@ -14,23 +14,23 @@ class Service
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
-    #[Groups('service:read')]
+    #[Groups(['service:read', 'sale:read'])]
     private string $id;
 
     #[ORM\Column(length: 255)]
-    #[Groups('service:read')]
+    #[Groups(['service:read', 'sale:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('service:read')]
+    #[Groups(['service:read', 'sale:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups('service:read')]
+    #[Groups(['service:read', 'sale:read'])]
     private ?float $hourlyRate = null;
 
     #[ORM\Column]
-    #[Groups('service:read')]
+    #[Groups(['service:read', 'sale:read'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'services')]

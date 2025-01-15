@@ -44,7 +44,7 @@ class SaleFixture extends Fixture implements DependentFixtureInterface
             $sale->setTotal($faker->randomFloat(2, 50, 500));
             $sale->setDiscount($faker->randomElement([null, $faker->randomFloat(2, 5, 50)]));
             $sale->setComment($faker->optional()->sentence());
-            $sale->setStatus($faker->randomElement([SaleStatus::CANCELLED, SaleStatus::COMPLETED, SaleStatus::PENDING]));
+            $sale->setStatus(SaleStatus::PENDING);
             $sale->setPaymentMethod($faker->randomElement(['credit_card', 'cash', 'bank_transfer']));
 
             $manager->persist($sale);

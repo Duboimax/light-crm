@@ -19,17 +19,17 @@ class Sale
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups('sale:read')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups('sale:read')]
     private ?Customer $customer = null;
 
     #[ORM\ManyToOne(targetEntity: Service::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups('sale:read')]
     private ?Service $service = null;
 

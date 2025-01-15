@@ -10,10 +10,7 @@
       </button>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="serviceStore.isLoading" class="flex justify-center items-center">
-      <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
-    </div>
+    <Loader v-if="serviceStore.isLoading"/>
 
     <!-- Error State -->
     <div v-if="serviceStore.error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
@@ -49,6 +46,7 @@ import { useServiceStore } from '~/stores/services';
 import type {Service} from "~/interfaces/ServiceInterface";
 import ServiceModal from "~/components/services/ServiceModal.vue";
 import ServiceCard from "~/components/services/ServiceCard.vue";
+import Loader from "~/components/loader/Loader.vue";
 
 const serviceStore = useServiceStore();
 
@@ -110,17 +108,3 @@ onMounted(() => {
   serviceStore.fetchServices();
 });
 </script>
-
-<style scoped>
-/* Loader Styles */
-.loader {
-  border-top-color: #3490dc;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>

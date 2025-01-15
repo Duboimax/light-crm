@@ -4,16 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Sale;
 use App\Enum\SaleStatus;
+use App\Form\SaleType;
 use App\Repository\SaleRepository;
-use App\Repository\CustomerRepository;
-use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/sales')]
@@ -32,41 +31,26 @@ class SaleController extends AbstractController
     public function create(
         Request $request,
         EntityManagerInterface $entityManager,
-        CustomerRepository $customerRepository,
-        ServiceRepository $serviceRepository,
-        ValidatorInterface $validator,
         SerializerInterface $serializer
-    ): Response {
-        $data = json_decode($request->getContent(), true);
+    ): JsonResponse
+    {
+        $form = $this->createForm(SaleType::class, new Sale());
+        $form->submit(json_decode($request->getContent(), true));
 
-        $customer = $customerRepository->find($data['customer']);
-        $service = $serviceRepository->find($data['service']);
-
-        if (!$customer || !$service) {
-            return $this->json(['message' => 'Client ou service non trouvé.'], Response::HTTP_BAD_REQUEST);
+        if (!$form->isValid()) {
+            return $this->json([
+                'message' => 'Invalid data',
+                'errors' => (string) $form->getErrors(true, false),
+            ], Response::HTTP_BAD_REQUEST);
         }
-
-        $sale = new Sale();
+        /** @var Sale $sale */
+        $sale = $form->getData();
         $sale->setUser($this->getUser());
-        $sale->setCustomer($customer);
-        $sale->setService($service);
-        $sale->setSaleDate(new \DateTime($data['saleDate'] ?? 'now'));
-        $sale->setTotal($data['total']);
-        $sale->setDiscount($data['discount'] ?? null);
-        $sale->setComment($data['comment'] ?? null);
-        $sale->setStatus($data['status'] ?? 'pending');
-        $sale->setPaymentMethod($data['paymentMethod'] ?? null);
-
-        $errors = $validator->validate($sale);
-        if (count($errors) > 0) {
-            return $this->json($errors, Response::HTTP_BAD_REQUEST);
-        }
 
         $entityManager->persist($sale);
         $entityManager->flush();
 
-        $json = $serializer->serialize($sale, 'json', ['groups' => 'sale:read']);
-        return new Response($json, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        return $this->json($sale, Response::HTTP_CREATED, context: ['groups' => ['service:read']]);
     }
 
     #[Route('/{id}', name: 'sales_show', methods: ['GET'])]

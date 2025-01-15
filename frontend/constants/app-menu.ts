@@ -22,7 +22,8 @@ export const AppMenu = [
   {
     title: 'Setting',
     icon: 'heroicons:cog',
-    path: '/settings',
+    path: '/settings/child/personal',
   },
 
 ];
+
