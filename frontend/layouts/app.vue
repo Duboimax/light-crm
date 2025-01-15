@@ -1,6 +1,6 @@
 <template>
-  <div class="flex h-screen bg-slate-50">
-    <aside class="relative flex w-64 flex-col divide-y bg-slate-100">
+  <div class="flex h-screen">
+    <aside class="relative flex w-64 flex-col divide-y">
       <div v-if="isShow">
         <button @click="isShow = !isShow">hide me</button>
         <button @click="sendEvent">Click me</button>
