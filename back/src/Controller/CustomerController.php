@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use App\Service\Mailer\MailerBuilder;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,5 +83,15 @@ class CustomerController extends AbstractController
         $em->flush();
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/customers/{id}/sendWelcomeEmail', name: 'customers_sendWelcomeEmail', methods: ['post'])]
+    public function sendWelcomeEmail(Customer $customer, MailerService $mailerService, MailerBuilder $mailerBuilder): JsonResponse
+    {
+        $emailConfig = $mailerBuilder->createWelcomeEmailConfig($customer->getEmail(), $customer->getFirstname());
+
+        $mailerService->sendEmail($emailConfig);
+
+        return $this->json(['message' => 'Email send'], Response::HTTP_OK);
     }
 }

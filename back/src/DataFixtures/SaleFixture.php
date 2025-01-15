@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use App\Entity\Sale;
 use App\Entity\Service;
 use App\Entity\User;
+use App\Enum\SaleStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -43,7 +44,7 @@ class SaleFixture extends Fixture implements DependentFixtureInterface
             $sale->setTotal($faker->randomFloat(2, 50, 500));
             $sale->setDiscount($faker->randomElement([null, $faker->randomFloat(2, 5, 50)]));
             $sale->setComment($faker->optional()->sentence());
-            $sale->setStatus($faker->randomElement(['completed', 'pending', 'cancelled']));
+            $sale->setStatus($faker->randomElement([SaleStatus::CANCELLED, SaleStatus::COMPLETED, SaleStatus::PENDING]));
             $sale->setPaymentMethod($faker->randomElement(['credit_card', 'cash', 'bank_transfer']));
 
             $manager->persist($sale);

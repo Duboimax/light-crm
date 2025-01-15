@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Mailer;
 
 interface EmailConfigInterface {
     public function getRecipientEmail(): string;

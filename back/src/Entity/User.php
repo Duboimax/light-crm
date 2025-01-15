@@ -74,6 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contactListId = null;
+
 
     public function __construct()
     {
@@ -381,6 +384,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImageUrl(?string $imageUrl): static
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    public function getContactListId(): ?int
+    {
+        return $this->contactListId;
+    }
+
+    public function setContactListId(?int $contactListId): static
+    {
+        $this->contactListId = $contactListId;
 
         return $this;
     }

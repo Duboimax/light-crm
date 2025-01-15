@@ -2,48 +2,34 @@
 
 namespace App\Service;
 
-use Mailjet\Client;
 use Mailjet\Resources;
+use App\Service\Mailer\EmailConfigInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class MailerService
 {
     public function __construct(
-        private Client $mailjetClient,
+        private readonly MailjetService $mailjetService,
         #[Autowire('%admin_email%')]
         private string $adminEmail,
-        #[Autowire('%mailjet.api_key%')]
-        private string $apiKey,
-        #[Autowire('%mailjet.secret_key%')]
-        private string $secretKey
     ) {
-        $this->mailjetClient = new Client($this->apiKey, $this->secretKey, true, ['version' => 'v3.1']);
     }
 
     public function sendEmail(EmailConfigInterface $config): void
     {
+        $client = $this->mailjetService->getClient();
+
         $body = [
-            'Messages' => [
-                [
-                    'From' => [
-                        'Email' => $this->adminEmail,
-                        'Name' => 'Light CRM',
-                    ],
-                    'To' => [
-                        [
-                            'Email' => $config->getRecipientEmail(),
-                            'Name' => $config->getRecipientName(),
-                        ],
-                    ],
-                    'TemplateID' => $config->getTemplateId(),
-                    'TemplateLanguage' => true,
-                    'Subject' => $config->getSubject(),
-                    'Variables' => $config->getVariables(),
-                ],
-            ],
+            'FromEmail' => $this->adminEmail,
+            'FromName' => 'Light CRM',
+            'To' => sprintf('"%s" <%s>', $config->getRecipientName(), $config->getRecipientEmail()),
+            'Subject' => $config->getSubject(),
+            'Mj-TemplateID' => $config->getTemplateId(),
+            'Mj-TemplateLanguage' => true,
+            'Vars' => json_encode($config->getVariables()),
         ];
 
-        $response = $this->mailjetClient->post(Resources::$Email, ['body' => $body]);
+        $response = $client->post(Resources::$Email, ['body' => $body]);
 
         if (!$response->success()) {
             throw new \RuntimeException(sprintf(
