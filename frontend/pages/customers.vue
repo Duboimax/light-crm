@@ -12,9 +12,7 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="customerStore.isLoading" class="flex justify-center items-center">
-      <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
-    </div>
+    <Loader v-if="customerStore.isLoading"/>
 
     <!-- Error State -->
     <div v-if="customerStore.fetchError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -81,6 +79,7 @@ import { ref, onMounted } from 'vue'
 import { useCustomerStore } from '~/stores/customers'
 import AddCustomerModal from "~/components/customers/CustomerModal.vue";
 import CustomerRow from "~/components/customers/CustomerRow.vue";
+import Loader from "~/components/loader/Loader.vue";
 
 definePageMeta({
   middleware: 'auth',
@@ -163,17 +162,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Loader Styles */
-.loader {
-  border-top-color: #3490dc;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 /* Table Styling */
 table {
