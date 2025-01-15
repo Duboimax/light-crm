@@ -1,3 +1,9 @@
+# Rendu Light CRM
+
+Valentin MULLER - Timote POLICET - Maxence DUBOIS
+
+@muller-v - @TimotePolicet - @Duboimax
+
 # Light Crm Back end
 
 ### How install project
@@ -25,4 +31,3 @@ If you need to update db
 2. Run ```php bin/console d:d:c``` To re create database
 3. Run ```php bin/console d:m:m``` for load migrations and create tables
 4. Run ```php bin/console d:f:l``` for load fixtures
-

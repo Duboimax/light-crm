@@ -13,7 +13,7 @@ class EmailCampaign
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, unique: true)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailCampaigns')]
@@ -21,24 +21,32 @@ class EmailCampaign
     private User $user;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private ?string $subject = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private ?string $body = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private ?\DateTimeInterface $scheduledAt = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups('emailcampaigns:read')]
+    #[Groups('emailcampaign:read')]
     private \DateTimeInterface $createdAt;
+
+    #[ORM\Column]
+    #[Groups('emailcampaign:read')]
+    private ?int $mailjetId = null;
+
+    #[ORM\Column(length: 40)]
+    #[Groups('emailcampaign:read')]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -128,6 +136,30 @@ class EmailCampaign
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMailjetId(): ?int
+    {
+        return $this->mailjetId;
+    }
+
+    public function setMailjetId(int $mailjetId): static
+    {
+        $this->mailjetId = $mailjetId;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
