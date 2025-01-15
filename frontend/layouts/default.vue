@@ -5,7 +5,7 @@
     <section class="flex h-full w-full flex-grow">
       <aside
           v-if="isAuthenticated"
-          class="group relative flex h-full flex-col items-center bg-gray-100 dark:bg-slate-700"
+          class="group relative flex h-full flex-col items-center"
       >
         <div class="flex w-40 items-center pt-4">
           <AppSideBar />

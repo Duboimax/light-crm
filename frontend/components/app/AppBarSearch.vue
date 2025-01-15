@@ -1,10 +1,9 @@
 <template>
-  <div class="w-ful flex items-center justify-center">
-    <n-input class="w-full" placeholder="Search">
-      <template #prefix>
-        <Icon name="fluent:search-20-regular" />
-      </template>
-    </n-input>
+  <div class="w-full flex items-center justify-center">
+    <span class="p-input-icon-left w-full">
+      <i class="pi pi-search"></i>
+      <InputText class="w-full" placeholder="Search" />
+    </span>
   </div>
 </template>
 

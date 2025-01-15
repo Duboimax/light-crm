@@ -8,6 +8,8 @@
       >
         Ajouter une Vente
       </button>
+      <Button label="Verify" />
+
     </div>
 
     <!-- Loading State -->
@@ -26,15 +28,15 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 rounded-lg">
-          <thead class="bg-gray-200 dark:bg-gray-700">
+        <table class="min-w-full border rounded-lg">
+          <thead>
           <tr>
-            <th class="py-2 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Client</th>
-            <th class="py-2 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Service</th>
-            <th class="py-2 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Date</th>
-            <th class="py-2 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Total (€)</th>
-            <th class="py-2 px-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Statut</th>
-            <th class="py-2 px-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Actions</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">Client</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">Service</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">Date</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">Total (€)</th>
+            <th class="py-2 px-4 text-left text-sm font-semibold">Statut</th>
+            <th class="py-2 px-4 text-center text-sm font-semibold">Actions</th>
           </tr>
           </thead>
           <tbody>
@@ -43,19 +45,19 @@
               :key="sale.id"
               class="border-t border-gray-300 dark:border-gray-600"
           >
-            <td class="py-2 px-4 text-gray-800 dark:text-gray-200">
+            <td class="py-2 px-4">
               {{ sale.customer.firstname }} {{ sale.customer.lastname }}
             </td>
-            <td class="py-2 px-4 text-gray-800 dark:text-gray-200">
+            <td class="py-2 px-4">
               {{ sale.service.name }}
             </td>
-            <td class="py-2 px-4 text-gray-800 dark:text-gray-200">
+            <td class="py-2 px-4">
               {{ formatDate(sale.saleDate) }}
             </td>
-            <td class="py-2 px-4 text-gray-800 dark:text-gray-200">
+            <td class="py-2 px-4">
               {{ sale.total.toFixed(2) }}
             </td>
-            <td class="py-2 px-4 text-gray-800 dark:text-gray-200">
+            <td class="py-2 px-4">
               <span :class="statusClass(sale.status)">{{ SaleStatuses[sale.status] }}</span>
             </td>
             <td class="py-2 px-4 text-center">
@@ -66,7 +68,6 @@
         </table>
       </div>
     </div>
-
     <!-- Add Sale Modal -->
     <SaleModal
         :isOpen="isAddModalOpen"

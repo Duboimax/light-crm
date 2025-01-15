@@ -1,13 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from '@primevue/themes/aura';
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
   modules: [
-    '@bg-dev/nuxt-naiveui',
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@nuxtjs/i18n',
+    '@primevue/nuxt-module'
   ],
 
   runtimeConfig: {
@@ -18,6 +20,17 @@ export default defineNuxtConfig({
 
   tailwindcss: {
     exposeConfig: true,
+  },
+
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: false || 'none',
+        }
+      }
+    }
   },
 
   app: {
@@ -48,9 +61,6 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts', // if you are using custom path, default
   },
 
-  naiveui: {
-    colorModePreference: 'light',
-  },
 
   router: {
     middleware: ['auth'],
