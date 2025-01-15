@@ -98,20 +98,8 @@
           </div>
         </div>
         <div class="flex justify-end space-x-2 mt-6">
-          <button
-              type="button"
-              @click="close"
-              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-200"
-          >
-            Annuler
-          </button>
-          <button
-              type="submit"
-              :disabled="isSubmitting"
-              class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-200"
-          >
-            {{ isSubmitting ? (isEditing ? 'Modification...' : 'Ajout...') : (isEditing ? 'Modifier' : 'Ajouter') }}
-          </button>
+          <BaseButton @click="close" variant="secondary">Annuler</BaseButton>
+          <BaseButton variant="primary" type="submit" :disabled="isSubmitting">{{ isSubmitting ? (isEditing ? 'Modification...' : 'Ajout...') : (isEditing ? 'Modifier' : 'Ajouter') }}</BaseButton>  
         </div>
       </form>
     </div>
@@ -121,6 +109,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue'
+import BaseButton from '~/components/common/BaseButton.vue';
 
 const props = defineProps<{
   isOpen: boolean,

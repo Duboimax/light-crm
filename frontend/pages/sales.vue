@@ -59,13 +59,7 @@
               <span :class="statusClass(sale.status)">{{ SaleStatuses[sale.status] }}</span>
             </td>
             <td class="py-2 px-4 text-center">
-              <button
-                  v-if="sale.status !== 'cancelled'"
-                  @click="handleCancel(sale.id)"
-                  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-              >
-                Annuler
-              </button>
+              <BaseButton v-if="sale.status !== 'cancelled'" @click="handleCancel(sale.id)" variant="delete">annuler</BaseButton>
             </td>
           </tr>
           </tbody>
@@ -88,6 +82,7 @@ import { useSaleStore } from '~/stores/sales';
 import SaleModal from '~/components/sales/SaleModal.vue';
 import {type Sale, SaleStatuses} from '~/interfaces/SaleInterface';
 import Loader from "~/components/loader/Loader.vue";
+import BaseButton from '~/components/common/BaseButton.vue';
 
 definePageMeta({
   middleware: 'auth',

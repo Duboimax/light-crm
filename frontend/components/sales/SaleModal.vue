@@ -86,19 +86,8 @@
 
         <!-- Actions -->
         <div class="flex justify-end space-x-4">
-          <button
-              type="button"
-              @click="close"
-              class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition"
-          >
-            Annuler
-          </button>
-          <button
-              type="submit"
-              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          >
-            Ajouter
-          </button>
+          <BaseButton @click="close" variant="secondary">Annuler</BaseButton>
+          <BaseButton variant="primary" type="submit">Ajouter</BaseButton>  
         </div>
       </form>
     </div>
@@ -110,6 +99,7 @@ import { ref, onMounted } from 'vue';
 import { useCustomerStore } from '~/stores/customers';
 import { useServiceStore } from '~/stores/services';
 import type { Service } from '~/interfaces/ServiceInterface';
+import BaseButton from '~/components/common/BaseButton.vue';
 
 const props = defineProps<{ isOpen: boolean }>();
 const emit = defineEmits(['close', 'add']);

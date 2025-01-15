@@ -1,7 +1,7 @@
 <template>
     <p class="text-lg font-semibold mb-4">Informations personnelles</p>
     <!-- Formulaire -->
-  <section class="shadow-md p-5 rounded-md">
+  <section class="p-5 rounded-md bg-slate-50 mb-8">
     <form @submit.prevent="handleUpdateUser(props.user)" >
         <!-- Nom et Prénom -->
           <div class="mb-4">
@@ -12,7 +12,7 @@
               v-model="props.user.firstname"
               required
               placeholder="Votre prénom"
-              class="input p-1 cursor-pointer"
+              class="input p-1 cursor-pointer bg-transparent"
             />
           </div>
           <div class="mb-4">
@@ -21,9 +21,8 @@
               type="text"
               id="lastname"
               v-model="props.user.lastname"
-              required
               placeholder="Votre nom"
-              class="input p-1 cursor-pointer"
+              class="input p-1 cursor-pointer bg-transparent"
             />
           </div>
         <!-- Email -->
@@ -33,24 +32,19 @@
             type="email"
             id="email"
             v-model="props.user.email"
-            required
             placeholder="votre@email.com"
-            class="input p-1 cursor-pointer"
+            class="input p-1 cursor-pointer bg-transparent"
           />
         </div>
         <!-- Boutons -->
         <div class="flex justify-end space-x-3 mt-6">
-          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
-            Enregistrer
-          </button>
+          <BaseButton variant="primary" type="submit">Enregistrer</BaseButton>  
         </div>
       </form>
   </section>
-  <section class="my-4">
-    <p class="text-lg font-semibold">Mot de passe</p>
-      <button>
-        Réinitialiser
-      </button>
+  <section class="my-4 flex justify-between p-5 rounded-md bg-slate-50 items-center">
+    <p class="text-md font-semibold">Mot de passe</p>
+    <BaseButton variant="secondary">Réinitialiser</BaseButton>
   </section>
 </template>
 
@@ -58,6 +52,7 @@
 import { ref, defineProps, defineEmits, watch } from 'vue';
 import type { User } from '~/interfaces/UserInterface';
 import { useAuthStore } from '~/stores/auth';
+import BaseButton from '~/components/common/BaseButton.vue';
 
 const authStore = useAuthStore();
 

@@ -5,14 +5,13 @@
       <h2 class="text-xl font-semibold mb-2">{{ customer.name }}</h2>
       <p class="text-gray-600">{{ customer.email }}</p>
     </div>
-    <button @click="deleteCustomer" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200">
-      Supprimer
-    </button>
+    <BaseButton  @click="deleteCustomer" variant="delete">Supprimer</BaseButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
+import BaseButton from '../common/Basebutton.vue';
 
 interface Customer {
   id: number
