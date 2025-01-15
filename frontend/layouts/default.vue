@@ -25,6 +25,10 @@
 import { useAuthStore } from '~/stores/auth'
 import { computed, onMounted } from 'vue'
 
+definePageMeta({
+  middleware: 'auth',
+});
+
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const user = computed(() => authStore.user)
