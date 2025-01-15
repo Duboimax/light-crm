@@ -37,7 +37,7 @@ const menuItems = ref([
     label: "Profile",
     icon: "pi pi-user",
     command: () => {
-      window.location.href = "/settings";
+      window.location.href = "/settings/child/personal";
     },
   },
   {

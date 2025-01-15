@@ -78,9 +78,6 @@ import AddCustomerModal from '~/components/customers/CustomerModal.vue';
 import { useToast } from 'primevue/usetoast';
 import Loader from "~/components/loader/Loader.vue";
 
-definePageMeta({
-  middleware: 'auth',
-});
 
 const customerStore = useCustomerStore();
 const toast = useToast();
