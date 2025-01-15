@@ -33,6 +33,10 @@ import { useAuthStore } from '~/stores/auth'
 import { AppSettings } from '~/constants'
 import Loader from "~/components/loader/Loader.vue";
 
+definePageMeta({
+  middleware: 'auth',
+});
+
 const authStore = useAuthStore()
 
 
