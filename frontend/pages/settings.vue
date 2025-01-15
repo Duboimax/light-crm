@@ -22,9 +22,7 @@
           <NuxtPage :user="authStore.user" />
         </div>
       </div>
-      <div v-else class="flex justify-center items-center p-4">
-        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
-      </div>
+      <Loader v-else />
     </n-card>
   </div>
 </template>
@@ -33,6 +31,7 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { AppSettings } from '~/constants'
+import Loader from "~/components/loader/Loader.vue";
 
 const authStore = useAuthStore()
 
@@ -43,18 +42,7 @@ onMounted(() => {
 </script>
 
   
-  <style scoped>
-  .loader {
-    border-top-color: #3490dc;
-    animation: spin 1s ease-in-out infinite;
-  }
-  
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  </style>
+
   
   
 
