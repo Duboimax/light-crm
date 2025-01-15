@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/settings">
+  <NuxtLink to="/settings/child/personal">
     <div class="flex gap-4">
       <article>
         <!-- <h2 class="text-base">{{ user }} </h2> -->
