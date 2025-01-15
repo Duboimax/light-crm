@@ -66,9 +66,7 @@
 import theme from '#tailwind-config/theme';
 import { type ECOption, useEcharts } from '~/hooks/echart';
 
-definePageMeta({
-  middleware: 'auth',
-})
+
 
 const themeColor = theme.colors.primary[500];
 

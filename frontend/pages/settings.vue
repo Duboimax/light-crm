@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-auto h-full w-full max-w-3xl p-4">
-    <n-card :content-style="{ padding: '0' }" class="h-full">
+  <div class="mx-auto h-full w-full  p-4">
+    <div class="h-full rounded-md border-2 border-slate-100 ">
       <div v-if="authStore.user" class="flex h-full gap-4 divide-x divide-slate-100">
         <!-- Barre latérale -->
         <nav class="w-52 p-4">
@@ -23,7 +23,7 @@
         </div>
       </div>
       <Loader v-else />
-    </n-card>
+    </div>
   </div>
 </template>
 

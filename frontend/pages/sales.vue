@@ -85,10 +85,6 @@ import {type Sale, SaleStatuses} from '~/interfaces/SaleInterface';
 import Loader from "~/components/loader/Loader.vue";
 import BaseButton from '~/components/common/BaseButton.vue';
 
-definePageMeta({
-  middleware: 'auth',
-});
-
 const saleStore = useSaleStore();
 const isAddModalOpen = ref(false);
 

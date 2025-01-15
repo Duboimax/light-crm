@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
 
     // Rediriger les utilisateurs non authentifiés vers la page de connexion (/login)
-    if (!authStore.isAuthenticated && to.path !== '/login' && to.path !== '/register') {
+    if (!authStore.isAuthenticated && to.path !== '/login' && to.path !== '/register' && to.meta.layout !== 'guest') {
         return navigateTo('/auth/login', { replace: true });
     }
 
