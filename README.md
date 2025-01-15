@@ -4,7 +4,7 @@
 
 1. Clone the project
 2. Open ```light-crm``` folder
-3. Put ```docker compose -up -d```
+3. Put ```docker compose up -d```
 4. Go to ```back``` folder
 5. Run ```composer install``` to install dependencies
 6. Run ```php bin/console d:d:c``` if database isn't already created
@@ -19,3 +19,10 @@ Nice you have already installed light-crm back and you are ready to code :)
 ### Tips
 
 if you want to visualize your database, you can use ```TablePlus```
+
+If you need to update db
+1. Run ```php bin/console d:d:d --force``` to drop database
+2. Run ```php bin/console d:d:c``` To re create database
+3. Run ```php bin/console d:m:m``` for load migrations and create tables
+4. Run ```php bin/console d:f:l``` for load fixtures
+
