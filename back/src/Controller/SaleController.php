@@ -62,16 +62,33 @@ class SaleController extends AbstractController
         return new Response($json, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 
-    #[Route('/{id}', name: 'sales_cancel', methods: ['PATCH'])]
-    public function cancel(Sale $sale, EntityManagerInterface $entityManager): Response
-    {
-//        $this->denyAccessUnlessGranted('update', $sale);
+    #[Route('/{id}', name: 'sales_update', methods: ['PUT'])]
+    public function update(
+        Request $request,
+        Sale $sale,
+        EntityManagerInterface $entityManager,
+        SerializerInterface $serializer
+    ): JsonResponse {
+        // Vérifier que l'utilisateur connecté est le propriétaire de la vente
         if ($sale->getUser() !== $this->getUser()) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier cette vente.');
         }
-        $sale->setStatus(SaleStatus::CANCELLED);
+
+        // Créer et soumettre le formulaire avec les données de la requête
+        $form = $this->createForm(SaleType::class, $sale);
+        $form->submit(json_decode($request->getContent(), true), false); // false pour une mise à jour partielle
+
+        if (!$form->isValid()) {
+            return $this->json([
+                'message' => 'Données invalides',
+                'errors' => (string) $form->getErrors(true, false),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Persister et sauvegarder les modifications
         $entityManager->flush();
 
-        return $this->json(['message' => 'Vente annulée avec succès.'], Response::HTTP_OK);
+        return $this->json($sale, Response::HTTP_OK, context: ['groups' => ['service:read']]);
     }
+
 }

@@ -1,88 +1,84 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-lg p-6 relative">
-      <!-- Bouton de fermeture -->
-      <button @click="close" class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-        <Icon name="close" class="text-2xl" />
-      </button>
+  <Dialog
+      :visible="isOpen"
+      :modal="true"
+      :header="service ? 'Modifier un Service' : 'Ajouter un Service'"
+      :closable="true"
+      :style="{ width: '50vw' }"
+      @hide="close"
+  >
+    <form @submit.prevent="handleSubmit" class="p-fluid">
+      <!-- Champ Nom -->
+      <div class="field">
+        <label for="name">Nom</label>
+        <InputText
+            id="name"
+            v-model="name"
+            required
+            placeholder="Entrez le nom du service"
+        />
+      </div>
 
-      <!-- Titre -->
-      <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6 text-center">
-        {{ service ? 'Modifier' : 'Ajouter' }} un Service
-      </h2>
+      <!-- Champ Description -->
+      <div class="field">
+        <label for="description">Description</label>
+        <Textarea
+            id="description"
+            v-model="description"
+            required
+            placeholder="Entrez une description"
+            rows="4"
+            autoResize
+        />
+      </div>
 
-      <!-- Formulaire -->
-      <form @submit.prevent="handleSubmit" class="space-y-5">
-        <!-- Champ Nom -->
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
-          <input
-              type="text"
-              id="name"
-              v-model="name"
-              required
-              placeholder="Entrez le nom du service"
-              class="input"
+      <!-- Champ Taux horaire et Durée -->
+      <div class="formgrid grid">
+        <div class="field col-6">
+          <label for="hourlyRate">Taux horaire (€)</label>
+          <InputNumber
+              id="hourlyRate"
+              v-model="hourlyRate"
+              mode="decimal"
+              :min="0"
+              placeholder="Exemple : 50"
           />
         </div>
 
-        <!-- Champ Description -->
-        <div>
-          <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-          <textarea
-              id="description"
-              v-model="description"
-              required
-              placeholder="Entrez une description"
-              rows="4"
-              class="input"
-          ></textarea>
+        <div class="field col-6">
+          <label for="duration">Durée (min)</label>
+          <InputNumber
+              id="duration"
+              v-model="duration"
+              mode="decimal"
+              :min="0"
+              placeholder="Exemple : 60"
+          />
         </div>
+      </div>
 
-        <!-- Champ Taux horaire -->
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="hourlyRate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Taux horaire (€)</label>
-            <input
-                type="number"
-                id="hourlyRate"
-                v-model="hourlyRate"
-                required
-                placeholder="Exemple : 50"
-                class="input"
-            />
-          </div>
-
-          <!-- Champ Durée -->
-          <div>
-            <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Durée (min)</label>
-            <input
-                type="number"
-                id="duration"
-                v-model="duration"
-                required
-                placeholder="Exemple : 60"
-                class="input"
-            />
-          </div>
-        </div>
-
-        <!-- Boutons -->
-        <div class="flex justify-end space-x-3 mt-6">
-          <button @click="close" type="button" class="btn-secondary">Annuler</button>
-          <button type="submit" class="btn-primary">
-            {{ service ? 'Modifier' : 'Ajouter' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <!-- Boutons -->
+      <div class="flex justify-end gap-3 mt-4">
+        <Button
+            label="Annuler"
+            icon="pi pi-times"
+            class="p-button-text"
+            @click="close"
+        />
+        <Button
+            :label="service ? 'Modifier' : 'Ajouter'"
+            icon="pi pi-check"
+            type="submit"
+            class="p-button-primary"
+        />
+      </div>
+    </form>
+  </Dialog>
 </template>
-
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch } from 'vue';
-import type {Service} from "~/interfaces/ServiceInterface";
+import type { Service } from '~/interfaces/ServiceInterface';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -93,14 +89,14 @@ const emit = defineEmits(['close', 'add', 'update']);
 
 const name = ref('');
 const description = ref('');
-const hourlyRate = ref(0);
-const duration = ref(0);
+const hourlyRate = ref<number | null>(null);
+const duration = ref<number | null>(null);
 
 const resetForm = () => {
   name.value = '';
   description.value = '';
-  hourlyRate.value = 0;
-  duration.value = 0;
+  hourlyRate.value = null;
+  duration.value = null;
 };
 
 watch(
@@ -123,16 +119,14 @@ const handleSubmit = () => {
     id: props.service?.id || crypto.randomUUID(),
     name: name.value,
     description: description.value,
-    hourlyRate: hourlyRate.value,
-    duration: duration.value,
+    hourlyRate: hourlyRate.value ?? 0,
+    duration: duration.value ?? 0,
   };
 
   props.service ? emit('update', newService) : emit('add', newService);
   resetForm();
   emit('close');
 };
-
-
 
 const close = () => {
   emit('close');
