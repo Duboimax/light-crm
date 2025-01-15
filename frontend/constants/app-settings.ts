@@ -1,17 +1,17 @@
 export const AppSettings = [
   {
     title: 'Personal Information',
-    path: '/settings/personal',
+    path: '/settings/child/personal',
     icon: 'solar:user-circle-outline',
   },
   {
     title: 'Administration',
-    path: '/settings/administration',
+    path: '/settings/child/administration',
     icon: 'heroicons:building-library',
   },
   {
     title: 'Billing',
-    path: '/settings/billing',
+    path: '/settings/child/billing',
     icon: 'solar:bill-list-outline',
   },
 ];
