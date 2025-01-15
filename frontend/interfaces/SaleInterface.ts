@@ -14,6 +14,7 @@ export interface Sale {
     service: Service
     saleDate: string;
     total: number;
-    discount: number;
+    discount?: number;
     status: SaleStatus;
+    comment?: string
 }

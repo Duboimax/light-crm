@@ -59,7 +59,6 @@
       </DataTable>
     </div>
 
-    <!-- Add Customer Modal -->
     <AddCustomerModal
         :isOpen="isModalOpen"
         :customer="selectedCustomer"
