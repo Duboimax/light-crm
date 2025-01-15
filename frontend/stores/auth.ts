@@ -1,10 +1,10 @@
 // stores/auth.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import type { User } from '~/interfaces/UserInterface'
 
 export const useAuthStore = defineStore('auth', () => {
     const nuxtApp = useNuxtApp()
-
     const user = ref<User | null>(null)
     const token = ref<string | null>(localStorage.getItem('token'))
 
@@ -44,6 +44,12 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
+    const updateUser = (updatedUser: Partial<User>) => {
+        if (user.value) {
+            user.value = { ...user.value, ...updatedUser }
+        }
+    }
+
     const logout = () => {
         token.value = null
         user.value = null
@@ -65,6 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
         login,
         register,
         fetchUser,
+        updateUser,
         logout,
         initialize,
     }
