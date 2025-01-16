@@ -39,29 +39,6 @@ class UserController extends AbstractController
         return $this->json($user, 200, [], ['groups' => 'user:read']);
     }
 
-    #[Route('/register', name: 'register', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
-    {
-        $form = $this->createForm(UserCreateType::class, new User());
-        $form->submit(json_decode($request->getContent(), true));
-
-        if (!$form->isValid()) {
-            $errors = (string) $form->getErrors(true, false);
-            return $this->json($errors, Response::HTTP_BAD_REQUEST);
-        }
-
-        /** @var User $user */
-        $user = $form->getData();
-        $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-        $user->setPassword($hashedPassword);
-
-        $user->setUsername($user->getEmail());
-
-        $em->persist($user);
-        $em->flush();
-
-        return $this->json($user, Response::HTTP_CREATED, [], ['groups' => 'user:read']);
-    }
 
     #[Route('/users/{id}', name: 'user_update', methods: ['PATCH'])]
     public function update(Request $request, User $user, EntityManagerInterface $em): JsonResponse
