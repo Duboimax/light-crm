@@ -4,17 +4,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserCreateType;
-use App\Form\UserUpdateType;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AuthController extends AbstractController
 {
@@ -41,5 +38,27 @@ class AuthController extends AbstractController
         $em->flush();
 
         return $this->json($user, Response::HTTP_CREATED, [], ['groups' => 'user:read']);
+    }
+
+    #[Route('/refresh', name: 'refresh_token', methods: ['POST'])]
+    public function refresh(
+        JWTTokenManagerInterface $jwtManager,
+        Request $request
+    ): JsonResponse {
+        $user = $this->getUser();
+        
+        if (!$user instanceof User) {
+            return $this->json(
+                ['error' => 'Token invalide ou utilisateur non authentifié.'],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $newToken = $jwtManager->create($user);
+
+        return $this->json([
+            'token' => $newToken,
+            'expiresIn' => 3600, 
+        ], Response::HTTP_OK);
     }
 }
